@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Products</title>
+</head>
+
+<body>
+    <h1>All Products</h1>
+    <ul>
+        {% for p in items %}
+        <li>{{ p.name }} - ₹{{ p.price }}</li>
+        {% empty %}
+        <li>No products yet.</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

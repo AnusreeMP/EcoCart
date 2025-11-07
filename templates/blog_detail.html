@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{blog.title}} - EcoCart Blog</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f9f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #2e8b57, #5cb85c);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .blog-image {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            font-size: 1rem;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            background: #2e8b57;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #5cb85c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>{{ blog.title }}</h1>
+    </div>
+
+    <div class="container">
+        {% if blog.image %}
+            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-image">
+        {% endif %}
+
+        <div class="meta">
+            By {{ blog.author }} | {{ blog.date }}
+        </div>
+
+        <div class="content">
+            {{ blog.content|linebreaks }}
+        </div>
+
+        <a href="{% url 'blog' %}" class="back-btn">← Back to Blog</a>
+    </div>
+
+</body>
+</html>

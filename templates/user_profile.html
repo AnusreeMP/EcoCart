@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - EcoCart</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0fff4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .profile-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #1b5e20;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .info {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #2e7d32;
+        }
+
+        .info label {
+            font-weight: 600;
+            display: inline-block;
+            width: 120px;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #43a047;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .btn:hover {
+            background-color: #2e7d32;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #e8f5e9;
+            color: #388e3c;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">🌿 EcoCart</div>
+        <div>
+            <a href="{% url 'userhome' %}" style="color: white; text-decoration: none;">Home</a>
+        </div>
+    </header>
+
+    <div class="profile-container">
+        <h2>My Profile</h2>
+
+        <div class="info">
+            <p><label>Username:</label> {{ user.username }}</p>
+            <p><label>Email:</label> {{ user.email }}</p>
+            <p><label>Phone:</label> {{ user.phone }}</p>
+            <p><label>Address:</label> {{ user.address }}</p>
+            <p><label>Pincode:</label> {{ user.pincode }}</p>
+        </div>
+
+        <div class="btn-container">
+            <a href="{% url 'edit_profile' %}" class="btn">Edit Profile</a>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 EcoCart | Making Shopping Greener 🌎
+    </footer>
+</body>
+</html>

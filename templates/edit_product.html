@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product | EcoCart Admin</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #e8f5e9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #2e7d32;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        form label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        form input, form textarea, form select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-top: 5px;
+        }
+        form button {
+            background: #43a047;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+        form button:hover {
+            background: #2e7d32;
+        }
+        img {
+            display: block;
+            margin: 15px auto;
+            max-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        a.back {
+            display: inline-block;
+            margin-top: 15px;
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a.back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌿 EcoCart Admin</h1>
+    </header>
+
+    <div class="container">
+        <h2>Edit Product</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="name">Product Name</label>
+            <input type="text" name="name" id="name" value="{{ product.name }}" required>
+
+            <label for="description">Description</label>
+            <textarea name="description" id="description" rows="4" required>{{ product.description }}</textarea>
+
+            <label for="price">Price (₹)</label>
+            <input type="number" name="price" id="price" step="0.01" value="{{ product.price }}" required>
+
+            <label for="category">Category</label>
+            <select name="category" id="category" required>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id == product.category.id %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="image">Product Image</label>
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% endif %}
+            <input type="file" name="image" id="image" accept="image/*">
+
+            <button type="submit">Update Product</button>
+        </form>
+
+        <a href="{% url 'admin_dashboard' %}" class="back">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

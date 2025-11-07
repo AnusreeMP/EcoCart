@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - EcoCart</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5fff5;
+            color: #2e7d32;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Results for "{{ query }}"</h2>
+
+    {% if results %}
+    <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+        {% for product in results %}
+        <div class="product-card">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" width="150" height="150"><br>
+            {% endif %}
+            <strong>{{ product.name }}</strong><br>
+            ₹{{ product.price }}<br>
+            {{ product.category.name }}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="text-align:center;">No products found.</p>
+    {% endif %}
+</body>
+
+</html>

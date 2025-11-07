@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCart - Home</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5fff5;
+            color: #333;
+        }
+
+        /* Header styling */
+        header {
+            background-color: #2e7d32;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 30px;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo h2 {
+            font-size: 22px;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        /* Search bar */
+        .search-bar {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 60%;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 15px;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar button {
+            position: absolute;
+            right: 20%;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #43a047;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #2e7d32;
+        }
+
+        /* Right section */
+        .right-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        /* Dropdown menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Wishlist icon */
+        .wishlist {
+            font-size: 22px;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .wishlist:hover {
+            color: #ff5252;
+        }
+
+        /* Body content */
+        main {
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        main h1 {
+            color: #2e7d32;
+        }
+
+        main p {
+            font-size: 17px;
+            color: #444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <!-- Logo Section -->
+        <div class="logo">
+            <img src="/static/images/logo.png" alt="EcoCart Logo">
+            <h2>EcoCart</h2>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <form action="{% url 'search' %}" method="get">
+                <input type="text" name="q" placeholder="Search eco-friendly products...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Profile Dropdown and Wishlist -->
+        <div class="right-icons">
+            <div class="dropdown">
+                <img src="/static/images/profile-icon.png" alt="Profile">
+                <div class="dropdown-content">
+                    <a href="{% url 'user_profile' %}">👤 My Profile</a>
+                    <a href="{% url 'user_orders' %}">🛒 My Orders</a>
+                    <a href="{% url 'logout' %}">🚪 Logout</a>
+                </div>
+            </div>
+            <a href="{% url 'wishlist' %}" class="wishlist">❤️</a>
+        </div>
+    </header>
+
+    <main>
+        <h1>Welcome to EcoCart 🌿</h1>
+        <p>Discover sustainable, eco-friendly products that make a difference.</p>
+    </main>
+
+</body>
+
+</html>

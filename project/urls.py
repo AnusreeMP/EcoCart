@@ -26,12 +26,34 @@ urlpatterns = [
     path('userhome/', views.userhome, name='userhome'),
     path('search/', views.search, name='search'),
     path('profile/', views.user_profile, name='user_profile'),
-
-   
-   
-
-
+    path('orders/', views.user_orders, name='user_orders'),
+    path('wishlist/', views.wishlist, name='wishlist'),
+    path('about/', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
+    path('blog-list/', views.blog_list, name='blog_list'),
+    path('blog-detail/<int:blog_id>/', views.blog_detail, name='blog_detail'),
+    path('add-blog/', views.add_blog, name='add_blog'),
+    path('edit-blog/<int:blog_id>/', views.edit_blog, name='edit_blog'),
+    path('category/<int:category_id>/', views.category_products, name='category_products'),
+    path('product/<int:product_id>/', views.product_detail, name='product_detail'),
+    path('productslist/', views.product_list, name='products'),
+    path('category_page/', views.categories, name='category_page'),
+    path('products/', views.products, name='products'),
+    path('block-user/<int:user_id>/', views.block_user, name='block_user'),
+    path('unblock-user/<int:user_id>/', views.unblock_user, name='unblock_user'),
+    path('delete-blog/<int:id>/', views.delete_blog, name='delete_blog'),
+    path('delete-user/<int:user_id>/', views.delete_user, name='delete_user'),
+    path('product/<int:product_id>/', views.product_detail, name='product_detail'),
+    path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+    path('buy-now/<int:product_id>/', views.buy_now, name='buy_now'),
 ]
+
+
+
+
+
+    
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

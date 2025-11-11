@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Blog | EcoCart</title>
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f5f8f3;
+            margin: 0;
+        }
+
+        header {
+            background-color: #2e7d32;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="text"], textarea, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #2e7d32;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: auto;
+        }
+
+        button:hover {
+            background-color: #1b5e20;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #2e7d32;
+            text-align: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>Edit Blog - EcoCart</header>
+
+    <div class="container">
+        <h2>Edit Blog Post</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label>Title:</label>
+            <input type="text" name="title" value="{{ blog.title }}" required>
+
+            <label>Content:</label>
+            <textarea name="content" rows="6" required>{{ blog.content }}</textarea>
+
+            {% if blog.image %}
+            <label>Current Image:</label>
+            <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+            {% endif %}
+
+            <label>Change Image:</label>
+            <input type="file" name="image">
+
+            <button type="submit">Update Blog</button>
+        </form>
+        <a href="{% url 'admin_dashboard' %}">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

@@ -109,6 +109,15 @@
                 {% endfor %}
             </select>
 
+            <label for="eco_rating">Eco Rating (1 - 5)</label>
+            <select name="eco_rating" id="eco_rating" required>
+                <option value="5">🌟🌟🌟🌟🌟 Excellent</option>
+                <option value="4">🌟🌟🌟🌟 Good</option>
+                <option value="3">🌟🌟🌟 Average</option>
+                <option value="2">🌟🌟 Poor</option>
+                <option value="1">🌟 Very Poor</option>
+            </select>
+
             <label for="image">Product Image</label>
             <input type="file" name="image" id="image" accept="image/*">
 

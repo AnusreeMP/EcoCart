@@ -3,92 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{blog.title}} - EcoCart Blog</title>
+    <title>{{ blog.title }} | EcoCart Blog</title>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background: #f5f9f6;
+            font-family: "Poppins", sans-serif;
             margin: 0;
-            padding: 0;
+            background: #f5f8f3;
+            color: #333;
         }
 
-        .header {
-            background: linear-gradient(90deg, #2e8b57, #5cb85c);
+        header {
+            background-color: #2e7d32;
             color: white;
-            padding: 40px 20px;
             text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2rem;
+            padding: 20px;
+            font-size: 26px;
         }
 
         .container {
             max-width: 900px;
             margin: 40px auto;
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .blog-image {
-            width: 100%;
-            border-radius: 12px;
+        h1 {
+            color: #2e7d32;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .date {
+            color: #777;
+            font-size: 14px;
             margin-bottom: 25px;
-            height: 400px;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            max-height: 400px;
             object-fit: cover;
         }
 
-        .meta {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
+        p {
+            line-height: 1.8;
+            font-size: 16px;
+            color: #444;
         }
 
-        .content {
-            font-size: 1rem;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .back-btn {
+        .back {
             display: inline-block;
-            margin-top: 25px;
+            margin-top: 20px;
             text-decoration: none;
-            background: #2e8b57;
             color: white;
+            background-color: #2e7d32;
             padding: 10px 20px;
             border-radius: 8px;
-            transition: 0.3s ease;
+            font-weight: 600;
         }
 
-        .back-btn:hover {
-            background: #5cb85c;
+        .back:hover {
+            background-color: #1b5e20;
         }
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <h1>{{ blog.title }}</h1>
-    </div>
+    <header>🌿 EcoCart Blog</header>
 
     <div class="container">
+        <h1>{{ blog.title }}</h1>
+        <p class="date">Published on {{ blog.created_at|date:"F d, Y" }}</p>
+
         {% if blog.image %}
-            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-image">
+        <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
         {% endif %}
 
-        <div class="meta">
-            By {{ blog.author }} | {{ blog.date }}
-        </div>
+        <p>{{ blog.content }}</p>
 
-        <div class="content">
-            {{ blog.content|linebreaks }}
-        </div>
-
-        <a href="{% url 'blog' %}" class="back-btn">← Back to Blog</a>
+        <a href="{% url 'blog_list' %}" class="back">← Back to Blogs</a>
     </div>
-
 </body>
 </html>

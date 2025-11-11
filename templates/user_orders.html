@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - EcoCart</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0fff4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .order-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1b5e20;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #c8e6c9;
+        }
+
+        th {
+            background: #81c784;
+            color: #1b5e20;
+        }
+
+        tr:hover {
+            background-color: #f1f8e9;
+        }
+
+        .status {
+            font-weight: bold;
+            border-radius: 6px;
+            padding: 4px 8px;
+        }
+
+        .status.Pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status.Completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status.Cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #43a047;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .btn:hover {
+            background-color: #2e7d32;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #e8f5e9;
+            color: #388e3c;
+            font-size: 14px;
+            margin-top: 40px;
+        }
+
+        .no-orders {
+            text-align: center;
+            color: #388e3c;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">🌿 EcoCart</div>
+        <div>
+            <a href="{% url 'userhome' %}" style="color: white; text-decoration: none; margin-right: 15px;">Home</a>
+            <a href="{% url 'user_profile' %}" style="color: white; text-decoration: none;">Profile</a>
+        </div>
+    </header>
+
+    <div class="order-container">
+        <h2>My Orders</h2>
+
+        {% if orders %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Order Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.product_name }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>₹{{ order.total_price }}</td>
+                    <td><span class="status {{ order.status }}">{{ order.status }}</span></td>
+                    <td>{{ order.order_date|date:"d M Y, h:i A" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="no-orders">You have not placed any orders yet 🌱</p>
+        {% endif %}
+    </div>
+
+    <div class="btn-container">
+        <a href="{% url 'userhome' %}" class="btn">Continue Shopping</a>
+    </div>
+
+    <footer>
+        © 2025 EcoCart | Green Shopping for a Better Planet 🌎
+    </footer>
+</body>
+</html>

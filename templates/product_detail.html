@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} | EcoCart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-green-600 text-white p-4 text-center text-2xl font-bold">
+        EcoCart
+    </nav>
+
+    <section class="max-w-5xl mx-auto p-6 bg-white mt-6 rounded-2xl shadow-lg flex flex-col md:flex-row gap-8">
+        <div class="flex-1">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="rounded-xl w-full object-cover">
+        </div>
+
+        <div class="flex-1">
+            <h2 class="text-3xl font-bold text-green-700 mb-4">{{ product.name }}</h2>
+            <p class="text-gray-600 mb-4">{{ product.description }}</p>
+
+            <div class="text-lg mb-2">
+                <strong>Eco Rating:</strong> <span class="text-green-600">{{ product.eco_rating }}/5</span>
+            </div>
+            <div class="text-2xl font-semibold text-gray-900 mb-6">₹{{ product.price }}</div>
+
+            <div class="flex gap-4">
+                <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-2 rounded-lg">
+                        Add to Cart
+                    </button>
+                </form>
+
+                <form method="POST" action="{% url 'buy_now' product.id %}">
+                    {% csrf_token %}
+                    <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg">
+                        Buy Now
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

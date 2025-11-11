@@ -4,8 +4,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import Blog
 from django.shortcuts import render, get_object_or_404
-from .models import Product,Category,CustomUser
+from .models import Product,Category,CustomUser,Blog
 from django.contrib.auth import get_user_model
+from .models import Order,Wishlist
+from django.contrib.auth.decorators import user_passes_test
 
 
 
@@ -73,6 +75,39 @@ def logout_user(request):
     messages.success(request, "You’ve been logged out successfully.")
     return redirect('login')
 
+def add_blog(request):
+    if request.method == "POST":
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        image = request.FILES.get('image')
+        Blog.objects.create(title=title, content=content, image=image)
+        messages.success(request, "Blog added successfully!")
+        return redirect('admin_dashboard')
+    return render(request, 'add_blog.html')
+
+def edit_blog(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    if request.method == "POST":
+        blog.title = request.POST.get('title')
+        blog.content = request.POST.get('content')
+        if 'image' in request.FILES:
+            blog.image = request.FILES['image']
+        blog.save()
+        messages.success(request, "Blog updated successfully!")
+        return redirect('admin_dashboard')
+    return render(request, 'edit_blog.html', {'blog': blog})
+
+def delete_blog(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    blog.delete()
+    messages.success(request, "Blog deleted successfully!")
+    return redirect('admin_dashboard')
+
+def blog_list(request):
+    blogs = Blog.objects.all().order_by('-created_at')
+    return render(request, 'blog_list.html', {'blogs': blogs})
+
+
 
 def blog_page(request):
     blogs = Blog.objects.all().order_by('-date')
@@ -83,9 +118,73 @@ def blog_detail(request, blog_id):
     blog = get_object_or_404(Blog, id=blog_id)
     return render(request, 'blog_detail.html', {'blog': blog})
 
+
 def shop(request):
-    products = Product.objects.all().order_by('id')
+    products = Product.objects.all()
     return render(request, 'shop.html', {'products': products})
+
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    return render(request, 'product_detail.html', {'product': product})
+
+
+def cart(request):
+    cart_items = CartItem.objects.all()
+    total_price = sum(item.total for item in cart_items)
+    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    cart_item, created = CartItem.objects.get_or_create(product=product)
+    cart_item.quantity += 1
+    cart_item.save()
+    return redirect('cart')
+
+def remove_from_cart(request, product_id):
+    item = get_object_or_404(CartItem, product_id=product_id)
+    item.delete()
+    return redirect('cart')
+
+def checkout(request):
+    cart_items = CartItem.objects.all()
+    total_price = sum(item.total for item in cart_items)
+    return render(request, 'checkout.html', {'cart_items': cart_items, 'total_price': total_price})
+
+def buy_now(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    CartItem.objects.all().delete()  
+    cart_item = CartItem.objects.create(product=product, quantity=1)
+    return redirect('checkout')
+
+def place_order(request):
+    
+    CartItem.objects.all().delete()  
+    return render(request, 'order_success.html')
+
+
+def categories(request):
+    categories = Category.objects.all()
+    return render(request, 'category.html', {'categories': categories})
+
+def products(request):
+    products = Product.objects.all()
+    return render(request, 'product.html', {'products': products})
+
+
+def category_products(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    products = Product.objects.filter(category=category)
+    return render(request, 'category_products.html', {'category': category, 'products': products})
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    return render(request, 'product_detail.html', {'product': product})
+
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, 'products.html', {'products': products})
+
 
 
 def admin_login(request):
@@ -102,15 +201,46 @@ def admin_login(request):
     
     return render(request, 'admin_login.html')
 
+# def admin_dashboard(request):
+#     products = Product.objects.all()
+#     categories = Category.objects.all()
+#     users = CustomUser.objects.all()
+#     blogs = Blog.objects.all()
+#     return render(request, 'admin_dashboard.html', {
+#         'products': products,
+#         'categories': categories,
+#         'users': users,
+#         'blogs': blogs
+#     })
+
+
+
+@user_passes_test(lambda u: u.is_staff)
 def admin_dashboard(request):
-    products = Product.objects.all()
-    categories = Category.objects.all()
-    users = CustomUser.objects.all()
-    return render(request, 'admin_dashboard.html', {
-        'products': products,
-        'categories': categories,
-        'users': users
-    })
+    context = {
+        'products': Product.objects.all(),
+        'categories': Category.objects.all(),
+        'blogs': Blog.objects.all(),
+        'users': CustomUser.objects.all(),
+    }
+    return render(request, 'admin_dashboard.html', context)
+
+def block_user(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    user.is_active = False
+    user.save()
+    return redirect('admin_dashboard')
+
+def unblock_user(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    user.is_active = True
+    user.save()
+    return redirect('admin_dashboard')
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.delete()
+    return redirect('admin_dashboard')
+
 
 def add_product(request):
     if request.method == 'POST':
@@ -135,8 +265,8 @@ def add_product(request):
     return render(request, 'add_product.html', {'categories': categories})
 
 
-def edit_product(request, id):
-    product = get_object_or_404(Product, id=id)
+def edit_product(request,  product_id):
+    product = get_object_or_404(Product, id=product_id)
     if request.method == 'POST':
         product.name = request.POST['name']
         product.description = request.POST['description']
@@ -207,6 +337,22 @@ def search(request):
 def user_profile(request):
     user = request.user
     return render(request, 'user_profile.html', {'user': user})
+
+def user_orders(request):
+    orders = Order.objects.filter(user=request.user).order_by('-order_date')
+    return render(request, 'user_orders.html', {'orders': orders})
+
+def wishlist(request):
+    items = Wishlist.objects.filter(user=request.user)
+    return render(request, 'wishlist.html', {'items': items})
+
+def about(request):
+    return render(request, 'about.html')
+
+def contact(request):
+    return render(request, 'contact.html')
+
+
 
 
 

@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCart | Categories</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mainGreen: '#228B22',
+                        accentBeige: '#F5F5DC',
+                        bgColor: '#F8FFF0',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bgColor text-gray-800 font-[Poppins]">
+
+    <!-- 🌿 Navbar (same as index) -->
+    {% include 'navbar.html' %}
+
+    <!-- 🌎 Categories Section -->
+    <section class="px-10 py-16 text-center">
+        <h1 class="text-4xl font-bold text-mainGreen mb-10">Explore Our Eco Categories 🌱</h1>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {% for category in categories %}
+            <div class="bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-lg transition">
+                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="h-56 w-full object-cover">
+                <div class="p-5">
+                    <h3 class="text-2xl font-semibold text-mainGreen mb-2">{{ category.name }}</h3>
+                    <p class="text-gray-600 mb-4">{{ category.description|truncatechars:80 }}</p>
+                    <a href="{% url 'products_by_category' category.id %}" 
+                       class="bg-mainGreen text-white px-4 py-2 rounded-md hover:bg-green-700 transition">
+                        View Products
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="col-span-full text-gray-600">No categories available yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- 🌱 Footer -->
+    <footer class="bg-mainGreen text-white text-center py-4 text-sm">
+        © 2025 EcoCart | Designed with 🌿 by EcoCart
+    </footer>
+</body>
+</html>

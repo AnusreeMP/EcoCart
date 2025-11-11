@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoCart Blogs</title>
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+            background: #f5f8f3;
+        }
+
+        header {
+            background-color: #2e7d32;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 26px;
+        }
+
+        .blogs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            padding: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .content h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .content p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>🌿 EcoCart Blog</header>
+
+    <div class="blogs">
+        {% for blog in blogs %}
+        <div class="card">
+            {% if blog.image %}
+            <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+            {% endif %}
+            <div class="content">
+                <h3>{{ blog.title }}</h3>
+                <p>{{ blog.content|truncatechars:150 }}</p>
+                <a href="{% url 'blog_detail' blog.id %}" class="read-more">Read More →</a>
+            </div>
+        </div>
+        {% empty %}
+        <p style="text-align:center; color:#555;">No blogs available.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
+

@@ -1,102 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoCart - Home</title>
+    <title>EcoCart - User Home</title>
     <style>
         body {
-            margin: 0;
             font-family: 'Poppins', sans-serif;
-            background-color: #f5fff5;
-            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f4;
         }
 
-        /* Header styling */
         header {
             background-color: #2e7d32;
+            color: white;
+            padding: 15px 50px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 30px;
-            color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Logo */
         .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .search-bar {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .logo img {
-            width: 40px;
-            height: 40px;
-        }
-
-        .logo h2 {
-            font-size: 22px;
-            margin: 0;
-            letter-spacing: 1px;
-        }
-
-        /* Search bar */
-        .search-bar {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            position: relative;
+            background: white;
+            border-radius: 25px;
+            padding: 6px 15px;
+            width: 40%;
         }
 
         .search-bar input {
-            width: 60%;
-            padding: 10px 15px;
             border: none;
-            border-radius: 25px;
-            font-size: 15px;
             outline: none;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            padding: 8px;
+            font-size: 14px;
         }
 
         .search-bar button {
-            position: absolute;
-            right: 20%;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #43a047;
+            background: #2e7d32;
             color: white;
             border: none;
-            padding: 8px 12px;
             border-radius: 20px;
+            padding: 8px 16px;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         .search-bar button:hover {
-            background-color: #2e7d32;
+            background: #256526;
         }
 
-        /* Right section */
         .right-icons {
             display: flex;
             align-items: center;
-            gap: 20px;
-            position: relative;
+            gap: 25px;
         }
 
-        /* Dropdown menu */
         .dropdown {
             position: relative;
             display: inline-block;
         }
 
-        .dropdown img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+        .dropbtn {
+            background: none;
+            border: none;
             cursor: pointer;
-            border: 2px solid white;
+            color: white;
+            font-size: 18px;
         }
 
         .dropdown-content {
@@ -105,14 +84,14 @@
             right: 0;
             background-color: white;
             min-width: 160px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1;
+            z-index: 10;
         }
 
         .dropdown-content a {
             color: #333;
-            padding: 10px 15px;
+            padding: 10px 14px;
             text-decoration: none;
             display: block;
         }
@@ -125,71 +104,59 @@
             display: block;
         }
 
-        /* Wishlist icon */
-        .wishlist {
-            font-size: 22px;
+        .heart-icon {
             color: white;
-            cursor: pointer;
+            font-size: 20px;
             text-decoration: none;
+            transition: 0.3s;
         }
 
-        .wishlist:hover {
-            color: #ff5252;
+        .heart-icon:hover {
+            color: #ffb3b3;
         }
 
-        /* Body content */
-        main {
+        .main {
             text-align: center;
-            margin-top: 60px;
+            margin-top: 100px;
         }
 
-        main h1 {
+        .main h1 {
             color: #2e7d32;
+            font-size: 32px;
         }
 
-        main p {
-            font-size: 17px;
-            color: #444;
+        .main p {
+            color: #555;
+            margin-top: 10px;
+            font-size: 16px;
         }
     </style>
 </head>
-
 <body>
-
     <header>
-        <!-- Logo Section -->
-        <div class="logo">
-            <img src="/static/images/logo.png" alt="EcoCart Logo">
-            <h2>EcoCart</h2>
-        </div>
+        <a href="#" class="logo">🌿 EcoCart</a>
 
-        <!-- Search Bar -->
-        <div class="search-bar">
-            <form action="{% url 'search' %}" method="get">
-                <input type="text" name="q" placeholder="Search eco-friendly products...">
-                <button type="submit">Search</button>
-            </form>
-        </div>
+        <form class="search-bar" method="GET" action="{% url 'search' %}">
+            <input type="text" name="query" placeholder="Search eco-friendly products...">
+            <button type="submit">Search</button>
+        </form>
 
-        <!-- Profile Dropdown and Wishlist -->
         <div class="right-icons">
             <div class="dropdown">
-                <img src="/static/images/profile-icon.png" alt="Profile">
+                <button class="dropbtn">👤</button>
                 <div class="dropdown-content">
-                    <a href="{% url 'user_profile' %}">👤 My Profile</a>
-                    <a href="{% url 'user_orders' %}">🛒 My Orders</a>
-                    <a href="{% url 'logout' %}">🚪 Logout</a>
+                    <a href="{% url 'user_profile' %}">My Profile</a>
+                    <a href="{% url 'user_orders' %}">My Orders</a>
+                    <a href="{% url 'logout' %}">Logout</a>
                 </div>
             </div>
-            <a href="{% url 'wishlist' %}" class="wishlist">❤️</a>
+            <a href="{% url 'wishlist' %}" class="heart-icon">❤️</a>
         </div>
     </header>
 
-    <main>
-        <h1>Welcome to EcoCart 🌿</h1>
-        <p>Discover sustainable, eco-friendly products that make a difference.</p>
-    </main>
-
+    <div class="main">
+        <h1>Welcome, {{ user.username }} 🌿 to EcoCart</h1>
+        <p>Discover eco-friendly products that make a difference.</p>
+    </div>
 </body>
-
 </html>

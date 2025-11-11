@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | EcoCart</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: url("{% static 'images/eco_bg.jpg' %}") no-repeat center center/cover;
+            color: #333;
+        }
+
+        header {
+            background-color: rgba(46, 125, 50, 0.95);
+            color: white;
+            padding: 15px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.9);
+            margin: 80px auto;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .content h1 {
+            color: #2e7d32;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .content p {
+            text-align: justify;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        footer {
+            background-color: #2e7d32;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .highlight {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{% url 'index' %}" class="logo">🌿 EcoCart</a>
+        <nav>
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'contact' %}">Contact</a>
+            
+        </nav>
+    </header>
+
+    <div class="content">
+        <h1>About EcoCart</h1>
+        <p>
+            Welcome to <span class="highlight">EcoCart</span> — your one-stop destination for sustainable, 
+            eco-friendly shopping. We believe that small choices can make a big difference in protecting our planet. 
+            Every product listed here is carefully chosen to promote a greener, cleaner, and more sustainable lifestyle.
+        </p>
+        <p>
+            Our mission is simple: <strong>to make eco-friendly shopping easy, affordable, and accessible</strong>. 
+            Whether you’re looking for reusable household items, natural products, or eco-conscious gifts, 
+            EcoCart ensures every product helps reduce waste and supports a healthier Earth.
+        </p>
+        <p>
+            Together, let’s create a world where style meets sustainability.  
+            🌱 Shop responsibly. Live consciously. Love the planet.
+        </p>
+    </div>
+
+    <footer>
+        © 2025 EcoCart | Built with 💚 for a better tomorrow.
+    </footer>
+</body>
+</html>

@@ -6,8 +6,9 @@ from .models import Blog
 from django.shortcuts import render, get_object_or_404
 from .models import Product,Category,CustomUser,Blog
 from django.contrib.auth import get_user_model
-from .models import Order,Wishlist
+from .models import Order,Wishlist,Cart
 from django.contrib.auth.decorators import user_passes_test
+
 
 
 
@@ -63,7 +64,7 @@ def login_page(request):
         if user is not None:
             login(request, user)
             messages.success(request, f"Welcome back, {user.username}!")
-            return redirect('userhome')  # You can change this to your home page
+            return redirect('userhome')  
         else:
             messages.error(request, "Invalid username or password.")
             return redirect('login')
@@ -104,7 +105,7 @@ def delete_blog(request, blog_id):
     return redirect('admin_dashboard')
 
 def blog_list(request):
-    blogs = Blog.objects.all().order_by('-created_at')
+    blogs = Blog.objects.all().order_by('-date')
     return render(request, 'blog_list.html', {'blogs': blogs})
 
 
@@ -128,39 +129,106 @@ def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     return render(request, 'product_detail.html', {'product': product})
 
-
-def cart(request):
-    cart_items = CartItem.objects.all()
-    total_price = sum(item.total for item in cart_items)
-    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
-
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    cart_item, created = CartItem.objects.get_or_create(product=product)
-    cart_item.quantity += 1
+    cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
+    if not created:
+        cart_item.quantity += 1
     cart_item.save()
     return redirect('cart')
 
+def change_cart(request, product_id):
+    
+    if request.method == "POST":
+        action = request.POST.get("action")
+        product = get_object_or_404(Product, id=product_id)
+        cart_item = Cart.objects.filter(user=request.user, product=product).first()
+
+        if not cart_item:
+            return redirect('cart')
+
+        if action == "increase":
+            cart_item.quantity += 1
+            cart_item.save()
+
+        elif action == "decrease":
+            if cart_item.quantity > 1:
+                cart_item.quantity -= 1
+                cart_item.save()
+            else:
+                cart_item.delete()
+
+        elif action == "remove":
+            cart_item.delete()
+
+    return redirect('cart')
+
+
+
+def view_cart(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    total_price = sum(item.total_price for item in cart_items)
+    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+
 def remove_from_cart(request, product_id):
-    item = get_object_or_404(CartItem, product_id=product_id)
-    item.delete()
+    product = get_object_or_404(Product, id=product_id)
+    Cart.objects.filter(user=request.user, product=product).delete()
     return redirect('cart')
 
 def checkout(request):
-    cart_items = CartItem.objects.all()
-    total_price = sum(item.total for item in cart_items)
+    cart_items = Cart.objects.filter(user=request.user)
+    total_price = sum(item.total_price for item in cart_items)
     return render(request, 'checkout.html', {'cart_items': cart_items, 'total_price': total_price})
+
+def update_cart(request, item_id):
+    if request.method == "POST":
+        action = request.POST.get("action")
+        cart_item = Cart.objects.get(id=item_id, user=request.user)
+
+        if action == "increase":
+            cart_item.quantity += 1
+        elif action == "decrease" and cart_item.quantity > 1:
+            cart_item.quantity -= 1
+        cart_item.save()
+    return redirect('checkout')
+
+def payment(request):
+    if request.method == 'POST':
+        cart_items = Cart.objects.filter(user=request.user)
+        total_price = sum(item.total_price for item in cart_items) + 50  
+        return render(request, 'payment.html', {'cart_items': cart_items, 'total_price': total_price})
+    return redirect('checkout')
+
+
+def place_order(request):
+    if request.method == 'POST':
+        payment_method = request.POST.get('payment_method')
+        cart_items = Cart.objects.filter(user=request.user)
+
+        for item in cart_items:
+            Order.objects.create(
+                user=request.user,
+                product_name=item.product.name,
+                quantity=item.quantity,
+                total_price=item.total_price,
+            )
+
+        cart_items.delete()
+        return render(request, 'order_success.html', {'payment_method': payment_method})
+    return redirect('checkout')
+
+
 
 def buy_now(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    CartItem.objects.all().delete()  
-    cart_item = CartItem.objects.create(product=product, quantity=1)
-    return redirect('checkout')
-
-def place_order(request):
-    
-    CartItem.objects.all().delete()  
+    Order.objects.create(
+        user=request.user,
+        product_name=product.name,
+        quantity=1,
+        total_price=product.price,
+    )
     return render(request, 'order_success.html')
+
 
 
 def categories(request):
@@ -215,15 +283,18 @@ def admin_login(request):
 
 
 
-@user_passes_test(lambda u: u.is_staff)
+
 def admin_dashboard(request):
-    context = {
-        'products': Product.objects.all(),
-        'categories': Category.objects.all(),
-        'blogs': Blog.objects.all(),
-        'users': CustomUser.objects.all(),
-    }
-    return render(request, 'admin_dashboard.html', context)
+    if not request.user.is_staff:
+        
+        context = {
+            'products': Product.objects.all(),
+            'categories': Category.objects.all(),
+            'blogs': Blog.objects.all(),
+            'users': CustomUser.objects.all(),
+        }
+        return render(request, 'admin_dashboard.html', context)
+    return redirect('admin_login')
 
 def block_user(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
@@ -322,8 +393,26 @@ def manage_users(request):
     users = CustomUser.objects.all()
     return render(request, 'manage_users.html', {'users': users})
 
+
 def userhome(request):
-    return render(request, 'userhome.html')
+    products = Product.objects.all()
+    categories = Category.objects.all()
+    query = request.GET.get('query')
+    category = request.GET.get('category')
+    user_wishlist = []
+    if query:
+        products = products.filter(name__icontains=query)
+    if category:
+        products = products.filter(category__name=category)
+    if request.user.is_authenticated:
+        user_wishlist = Wishlist.objects.filter(user=request.user).values_list('product__name', flat=True)
+
+    return render(request, 'userhome.html', {
+        'products': products,
+        'categories': categories,
+        'user_wishlist': user_wishlist
+    })
+
 
 
 def search(request):
@@ -331,7 +420,7 @@ def search(request):
     results = []
     if query:
         results = Product.objects.filter(name__icontains=query)
-    return render(request, 'search_results.html', {'results': results, 'query': query})
+    return render(request, 'userhome.html', {'products': products, 'query': query})
 
 
 def user_profile(request):
@@ -341,10 +430,55 @@ def user_profile(request):
 def user_orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-order_date')
     return render(request, 'user_orders.html', {'orders': orders})
-
+ 
 def wishlist(request):
+    sort_by = request.GET.get('sort', 'newest')
     items = Wishlist.objects.filter(user=request.user)
-    return render(request, 'wishlist.html', {'items': items})
+    if sort_by == 'price_low_to_high':
+        items = items.order_by('price')
+    elif sort_by == 'price_high_to_low':
+        items = items.order_by('-price')
+    else:  
+        items = items.order_by('-date_added')
+
+    # 🪄 Optional: show message if wishlist is empty
+    if not items.exists():
+        messages.info(request, "Your wishlist is empty 🌿")
+
+    # 🎨 Render template
+    return render(request, 'wishlist.html', {
+        'items': items,
+        'sort_by': sort_by
+    })
+
+def add_to_wishlist(request, id):
+    product = get_object_or_404(Product, id=id)
+
+    # Check if this product is already in the wishlist for this user
+    wishlist_item, created = Wishlist.objects.get_or_create(
+        user=request.user,
+        product=product,
+        defaults={
+            'product_name': product.name,
+            'product_image': product.image,
+            'price': product.price
+        }
+    )
+
+    if created:
+        messages.success(request, f"✅ '{product.name}' added to your wishlist!")
+    else:
+        messages.info(request, f"❤️ '{product.name}' is already in your wishlist.")
+
+    return redirect('wishlist')
+
+def toggle_wishlist(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    wishlist, created = Wishlist.objects.get_or_create(user=request.user, product=product)
+    if not created:
+        wishlist.delete()
+    return redirect('wishlist')
+
 
 def about(request):
     return render(request, 'about.html')

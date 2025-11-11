@@ -1,6 +1,7 @@
+{% extends 'index.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% block content %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,10 +21,11 @@
         }
     </script>
 </head>
+
 <body class="bg-bgColor text-gray-800 font-[Poppins]">
 
     <!-- 🌿 Navbar (same as index) -->
-    {% include 'navbar.html' %}
+
 
     <!-- 🌎 Categories Section -->
     <section class="px-10 py-16 text-center">
@@ -36,8 +38,8 @@
                 <div class="p-5">
                     <h3 class="text-2xl font-semibold text-mainGreen mb-2">{{ category.name }}</h3>
                     <p class="text-gray-600 mb-4">{{ category.description|truncatechars:80 }}</p>
-                    <a href="{% url 'products_by_category' category.id %}" 
-                       class="bg-mainGreen text-white px-4 py-2 rounded-md hover:bg-green-700 transition">
+                    <a href="{% url 'category' category.id %}"
+                        class="bg-mainGreen text-white px-4 py-2 rounded-md hover:bg-green-700 transition">
                         View Products
                     </a>
                 </div>
@@ -53,4 +55,4 @@
         © 2025 EcoCart | Designed with 🌿 by EcoCart
     </footer>
 </body>
-</html>
+{% endblock %}

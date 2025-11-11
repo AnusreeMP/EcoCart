@@ -90,6 +90,12 @@
             <label>Image:</label>
             <input type="file" name="image">
 
+            <label>Author:</label>
+            <input type="text" name="author" required>
+
+            <label>Published Date:</label>
+            <input type="date" name="published_date" required>
+
             <button type="submit">Publish Blog</button>
         </form>
         <a href="{% url 'admin_dashboard' %}">← Back to Dashboard</a>

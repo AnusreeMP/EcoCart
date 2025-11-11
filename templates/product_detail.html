@@ -27,19 +27,9 @@
             <div class="text-2xl font-semibold text-gray-900 mb-6">₹{{ product.price }}</div>
 
             <div class="flex gap-4">
-                <form method="POST" action="{% url 'add_to_cart' product.id %}">
-                    {% csrf_token %}
-                    <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-2 rounded-lg">
+                <a href="{% url 'login' %}"><button class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-2 rounded-lg">
                         Add to Cart
-                    </button>
-                </form>
-
-                <form method="POST" action="{% url 'buy_now' product.id %}">
-                    {% csrf_token %}
-                    <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg">
-                        Buy Now
-                    </button>
-                </form>
+                    </button></a>
             </div>
         </div>
     </section>

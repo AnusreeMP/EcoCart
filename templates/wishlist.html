@@ -2,6 +2,7 @@
 {% load static %}
 
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +36,7 @@
             background-color: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
@@ -61,7 +62,7 @@
 
         .wishlist-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .wishlist-item img {
@@ -125,12 +126,14 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="logo">🌿 EcoCart</div>
         <div>
             <a href="{% url 'userhome' %}" style="color: white; text-decoration: none; margin-right: 15px;">Home</a>
-            <a href="{% url 'user_profile' %}" style="color: white; text-decoration: none; margin-right: 15px;">Profile</a>
+            <a href="{% url 'user_profile' %}"
+                style="color: white; text-decoration: none; margin-right: 15px;">Profile</a>
             <a href="{% url 'user_orders' %}" style="color: white; text-decoration: none;">My Orders</a>
         </div>
     </header>
@@ -138,29 +141,12 @@
     <div class="wishlist-container">
         <h2>My Wishlist ❤️</h2>
 
-        {% if items %}
-        <div class="wishlist-grid">
-            {% for item in items %}
-            <div class="wishlist-item">
-                {% if item.product_image %}
-                    <img src="{{ item.product_image.url }}" alt="{{ item.product_name }}">
-                {% else %}
-                    <img src="{% static 'images/no-image.png' %}" alt="No Image">
-                {% endif %}
-                <h3>{{ item.product_name }}</h3>
-                <p>₹{{ item.price }}</p>
-                <a href="#" class="btn">Add to Cart</a>
-                <a href="#" class="btn remove-btn">Remove</a>
-            </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <p class="no-items">Your wishlist is empty 🌱</p>
-        {% endif %}
+
     </div>
 
     <footer>
         © 2025 EcoCart | Love the Earth, Live Green 🌎
     </footer>
 </body>
+
 </html>

@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment | EcoCart</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f1f8f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .payment-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      width: 400px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #2f5132;
+      text-align: center;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #333;
+    }
+    .payment-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+    .pay-btn {
+      background-color: #4CAF50;
+      color: white;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 20px;
+    }
+    .pay-btn:hover {
+      background-color: #43a047;
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-box">
+    <h2>Payment Options</h2>
+    <form method="POST" action="{% url 'place_order' %}">
+      {% csrf_token %}
+      <label><input type="radio" name="payment_method" value="UPI" required> UPI (Google Pay / PhonePe)</label>
+      <label><input type="radio" name="payment_method" value="Card"> Debit / Credit Card</label>
+      <label><input type="radio" name="payment_method" value="COD"> Cash on Delivery</label>
+      
+      <button type="submit" class="pay-btn">Confirm & Place Order</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -44,9 +44,23 @@ urlpatterns = [
     path('delete-blog/<int:id>/', views.delete_blog, name='delete_blog'),
     path('delete-user/<int:user_id>/', views.delete_user, name='delete_user'),
     path('product/<int:product_id>/', views.product_detail, name='product_detail'),
+    path('cart/', views.view_cart, name='cart'),
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+    path('remove-from-cart/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
+    path('checkout/', views.checkout, name='checkout'),
+    path('place-order/', views.place_order, name='place_order'),
     path('buy-now/<int:product_id>/', views.buy_now, name='buy_now'),
+    # path('update-cart/<int:item_id>/', views.update_cart, name='update_cart'),
+    path('change-cart/<int:product_id>/', views.change_cart, name='change_cart'),
+    path('payment/', views.payment, name='payment'),
+    path('add-to-wishlist/<int:product_id>/', views.add_to_wishlist, name='add_to_wishlist'),
+    
+
+
+
+
 ]
+
 
 
 

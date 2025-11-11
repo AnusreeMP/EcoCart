@@ -8,6 +8,11 @@
     <title>EcoCart | Home</title>
     <!-- ✅ Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 
     <!-- Optional: Custom Tailwind config for your Eco theme -->
     <script>
@@ -32,55 +37,29 @@
 
         <ul class="hidden md:flex space-x-8 text-lg">
             <li><a href="" class="hover:text-accentBeige">Home</a></li>
-
-            <!-- 🛍 Shop Dropdown -->
-            <li class="relative group">
-                <a href="shop" class="hover:text-accentBeige flex items-center">
-                    Shop
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </a>
-                <ul
-                    class="absolute hidden group-hover:block bg-white text-mainGreen rounded-md shadow-md mt-2 py-2 w-40 text-left">
-                    <li><a href="{% url 'category_page' %}" class="block px-4 py-2 hover:bg-green-100">Categories</a>
-                    </li>
-                    <li><a href="{% url 'products' %}" class="block px-4 py-2 hover:bg-green-100">Products</a></li>
-                </ul>
-            </li>
-
-            <li><a href="blog" class="hover:text-accentBeige">Blog</a></li>
-            <li><a href="about" class="hover:text-accentBeige">About</a></li>
-            <li><a href="contact" class="hover:text-accentBeige">Contact</a></li>
+            <li><a href="{% url 'shop' %}" class="hover:text-accentBeige">Shop</a></li>
+            <li><a href="{% url 'blog' %}" class="hover:text-accentBeige">Blog</a></li>
+            <li><a href="{% url 'about' %}" class="hover:text-accentBeige">About</a></li>
+            <li><a href="{% url 'contact' %}" class="hover:text-accentBeige">Contact</a></li>
         </ul>
 
         <!-- 🌸 Right Side Icons -->
         <div class="flex items-center gap-5">
-
-            <!-- ❤ Wishlist Icon -->
-            <a href="{% url 'wishlist' %}" class="text-white text-2xl hover:text-accentBeige">❤</a>
-
-            <!-- 👤 Profile Dropdown -->
-            <div class="relative group">
-                <button class="focus:outline-none text-2xl hover:text-accentBeige">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle bg-white rounded-pill text-dark" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
                     👤
                 </button>
-
-                <div
-                    class="absolute right-0 hidden group-hover:block bg-white text-mainGreen rounded-md shadow-md mt-2 py-2 w-36 text-center">
-                    <a href="register" class="block px-4 py-2 hover:bg-green-100">Register</a>
-                    <a href="login" class="block px-4 py-2 hover:bg-green-100">Login</a>
-                </div>
+                <ul class="dropdown-menu">
+                    <li> <a href="{% url 'register' %}" class="block px-4 py-2 hover:bg-green-100 text-sm">Register</a>
+                    </li>
+                    <li><a href="{% url 'login' %}" class="block px-4 py-2 hover:bg-green-100 text-sm">Login</a></li>
+                </ul>
             </div>
 
-            <!-- 🛒 Cart Button -->
-            <button
-                class="bg-accentBeige text-mainGreen font-semibold px-4 py-1.5 rounded-md hover:bg-yellow-100 transition">
-                🛒 Cart
-            </button>
-        </div>
+
     </nav>
+    {% block content%}
 
     <!-- 🌎 Hero Section -->
     <section class="relative h-[90vh] flex items-center justify-center text-center text-white">
@@ -123,6 +102,7 @@
             </div>
         </div>
     </section>
+    {% endblock %}
 
     <!-- 🌱 Footer -->
     <footer class="bg-mainGreen text-white text-center py-4 text-sm">

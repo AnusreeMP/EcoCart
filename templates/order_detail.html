@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details - EcoCart</title>
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f1f8f4;
+            background-color: #e8f5e9;
             margin: 0;
-            padding: 0;
         }
 
         header {
@@ -18,8 +18,8 @@
             color: white;
             padding: 15px 30px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
         .logo {
@@ -27,31 +27,28 @@
             font-weight: bold;
         }
 
-        .order-detail-container {
-            max-width: 800px;
-            margin: 40px auto;
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
-            text-align: center;
             color: #1b5e20;
-            margin-bottom: 25px;
+            text-align: center;
         }
 
-        .product-info {
+        .item-card {
             display: flex;
-            align-items: center;
             gap: 20px;
-            border-bottom: 1px solid #c8e6c9;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+            border-bottom: 2px solid #c8e6c9;
+            padding: 15px 0;
         }
 
-        .product-info img {
+        .item-card img {
             width: 100px;
             height: 100px;
             border-radius: 10px;
@@ -59,145 +56,141 @@
             border: 2px solid #a5d6a7;
         }
 
-        .product-details h3 {
+        .item-details h3 {
+            margin: 0;
             color: #2e7d32;
-            margin: 0 0 5px;
         }
 
-        .product-details p {
-            margin: 2px 0;
-            color: #444;
+        .item-details p {
+            margin: 4px 0;
         }
 
         .status {
             font-weight: bold;
-            border-radius: 6px;
             padding: 5px 10px;
+            border-radius: 8px;
         }
 
-        .status.Pending {
-            background-color: #fff3cd;
-            color: #856404;
-        }
+        .status.Pending { background: #fff3cd; color: #856404; }
+        .status.Completed { background: #d4edda; color: #155724; }
+        .status.Cancelled { background: #f8d7da; color: #721c24; }
 
-        .status.Completed {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .status.Cancelled {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .order-summary {
-            background: #f9fff9;
+        .summary-box {
+            background: #f1f8f4;
             padding: 20px;
+            margin-top: 25px;
             border-radius: 10px;
-            margin-bottom: 25px;
         }
 
-        .summary-item {
+        .summary-row {
             display: flex;
             justify-content: space-between;
             padding: 6px 0;
-        }
-
-        .summary-item strong {
-            color: #2e7d32;
-        }
-
-        .back-btn {
-            display: inline-block;
-            text-decoration: none;
-            background-color: #43a047;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-size: 15px;
-        }
-
-        .back-btn:hover {
-            background-color: #2e7d32;
-        }
-
-        footer {
-            text-align: center;
-            padding: 15px;
-            background: #e8f5e9;
-            color: #388e3c;
-            font-size: 14px;
-            margin-top: 40px;
-        }
-
-        .tracking {
-            margin-top: 25px;
         }
 
         .tracking-step {
             background: #e8f5e9;
             padding: 12px;
             border-radius: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .tracking-step.completed {
             background: #c8e6c9;
-            font-weight: 600;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+            background: #2e7d32;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 25px;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 15px;
+            background: #c8e6c9;
+            color: #1b5e20;
         }
     </style>
+
 </head>
 <body>
-    <header>
-        <div class="logo">🌿 EcoCart</div>
-        <div>
-            <a href="{% url 'userhome' %}" style="color: white; text-decoration: none; margin-right: 15px;">Home</a>
-            <a href="{% url 'user_orders' %}" style="color: white; text-decoration: none;">My Orders</a>
+
+<header>
+    <div class="logo">🌿 EcoCart</div>
+    <div>
+        <a href="{% url 'userhome' %}" style="color:white; text-decoration:none; margin-right: 15px;">Home</a>
+        <a href="{% url 'user_orders' %}" style="color:white; text-decoration:none;">My Orders</a>
+    </div>
+</header>
+
+<div class="container">
+    <h2>Order Details</h2>
+
+    <!-- LOOP THROUGH ALL PRODUCTS IN THE ORDER -->
+    {% for item in order.items.all %}
+    <div class="item-card">
+        <img src="{{ item.product.image.url }}" alt="Product Image">
+        <div class="item-details">
+            <h3>{{ item.product.name }}</h3>
+            <p>Price: ₹{{ item.price }}</p>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Total: <strong>₹{{ item.total_price }}</strong></p>
         </div>
-    </header>
+    </div>
+    {% endfor %}
 
-    <div class="order-detail-container">
-        <h2>Order Details</h2>
-
-        <div class="product-info">
-            <img src="{{ order.product.image.url }}" alt="Product Image" class="product-image">
-            <div class="product-details">
-                <h3>{{ order.product_name }}</h3>
-                <p>Quantity: {{ order.quantity }}</p>
-                <p>Total Price: ₹{{ order.total_price }}</p>
-                <p>Status: <span class="status {{ order.status }}">{{ order.status }}</span></p>
-            </div>
-        </div>
-
-        <div class="order-summary">
-            <div class="summary-item">
-                <span>Payment Method:</span>
-                <strong>{{ order.payment_method }}</strong>
-            </div>
-            <div class="summary-item">
-                <span>Order Date:</span>
-                <strong>{{ order.order_date|date:"d M Y, h:i A" }}</strong>
-            </div>
-            <div class="summary-item">
-                <span>Delivery Address:</span>
-                <strong>{{ order.address }}</strong>
-            </div>
+    <!-- ORDER SUMMARY -->
+    <div class="summary-box">
+        <div class="summary-row">
+            <span>Order Status:</span>
+            <span class="status {{ order.status }}">{{ order.status }}</span>
         </div>
 
-        <div class="tracking">
-            <h3 style="color:#1b5e20;">Order Tracking</h3>
-            <div class="tracking-step completed">✔ Order Placed</div>
-            <div class="tracking-step {% if order.status in 'Shipped,Completed' %}completed{% endif %}">📦 Shipped</div>
-            <div class="tracking-step {% if order.status == 'Completed' %}completed{% endif %}">✅ Delivered</div>
+        <div class="summary-row">
+            <span>Payment Method:</span>
+            <strong>{{ order.payment_method }}</strong>
         </div>
 
-        <div style="text-align:center; margin-top:30px;">
-            <a href="{% url 'user_orders' %}" class="back-btn">← Back to Orders</a>
+        <div class="summary-row">
+            <span>Order Date:</span>
+            <strong>{{ order.order_date|date:"d M Y, h:i A" }}</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Delivery Address:</span>
+            <strong>{{ order.address_order }}</strong>
+        </div>
+
+        <div class="summary-row" style="border-top:2px solid #c8e6c9; margin-top:10px; padding-top:10px;">
+            <span>Total Order Amount:</span>
+            <strong>₹{{ order.total_amount }}</strong>
         </div>
     </div>
 
-    <footer>
-        © 2025 EcoCart | Green Shopping for a Better Planet 🌎
-    </footer>
+    <!-- TRACKING -->
+    <h3 style="color:#1b5e20; margin-top:25px;">Order Tracking</h3>
+
+    <div class="tracking-step completed">✔ Order Placed</div>
+    <div class="tracking-step {% if order.status == 'Shipped' or order.status == 'Completed' %}completed{% endif %}">
+        📦 Shipped
+    </div>
+    <div class="tracking-step {% if order.status == 'Completed' %}completed{% endif %}">
+        ✅ Delivered
+    </div>
+
+    <a href="{% url 'user_orders' %}" class="back-btn">← Back to My Orders</a>
+</div>
+
+<footer>
+    © 2025 EcoCart | Green Shopping for a Better Planet 🌎
+</footer>
+
 </body>
 </html>

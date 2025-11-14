@@ -5,208 +5,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout | EcoCart</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>EcoCart - Checkout</title>
+
+    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f1f8f4;
+            font-family: Arial, sans-serif;
+            background: #f1f7f1;
             margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 30px auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .cart-section {
-            flex: 2;
-            background: #fff;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .summary-section {
-            flex: 1;
+        .checkout-container {
+            width: 85%;
+            margin: auto;
+        }
+
+        .section {
             background: #fff;
+            margin-bottom: 25px;
             padding: 20px;
-            border-radius: 12px;
-            height: fit-content;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            color: #2f5132;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #4CAF50;
-            padding-bottom: 5px;
-        }
-
-        .cart-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #ddd;
-            padding: 15px 0;
-        }
-
-        .cart-item img {
-            width: 90px;
-            height: 90px;
-            object-fit: cover;
+            border-left: 4px solid #39b36e;
             border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
         }
 
-        .item-info {
-            flex: 2;
-            padding-left: 15px;
+        .section-title {
+            margin-bottom: 15px;
+            color: #1e7c47;
+            font-weight: bold;
         }
 
-        .item-info h4 {
-            margin: 0;
-            font-size: 16px;
-            color: #333;
+        .address-card {
+            padding: 10px 15px;
+            border: 1px solid #d0e9d6;
+            border-radius: 10px;
+            background: #f7fff7;
+            position: relative;
         }
 
-        .item-info p {
-            margin: 5px 0;
-            color: #666;
+        .edit-btn {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: #1e7c47;
             font-size: 14px;
         }
 
-        .quantity-control {
+        .item-card {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            gap: 15px;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
         }
 
-        .quantity-control button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            cursor: pointer;
+        .item-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 10px;
+        }
+
+        .item-name {
             font-size: 18px;
-        }
-
-        .quantity-control span {
             font-weight: bold;
-            font-size: 15px;
-            color: #333;
         }
 
-        .price {
+        .item-price {
+            color: #1e7c47;
             font-weight: bold;
-            color: #2f5132;
+            margin-top: 5px;
         }
 
-        .summary-section h3 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .summary-section p {
-            display: flex;
-            justify-content: space-between;
-            margin: 8px 0;
-            font-size: 15px;
-            color: #444;
-        }
-
-        .summary-section hr {
-            border: none;
-            border-top: 1px solid #ddd;
-            margin: 15px 0;
-        }
-
-        .total {
-            font-weight: bold;
+        .payment-option {
+            display: block;
+            padding: 12px 0;
             font-size: 17px;
+            cursor: pointer;
         }
 
-        .checkout-btn {
-            background-color: #4CAF50;
-            color: white;
+        .payment-box {
+            background: #f3faf5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #27a05a;
+        }
+
+        .payment-box input {
+            display: block;
             width: 100%;
             padding: 12px;
-            border: none;
+            margin-top: 10px;
             border-radius: 8px;
-            font-size: 16px;
+            border: 1px solid #27a05a;
+        }
+
+        .verify-btn {
+            background: #27a05a;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: none;
+            margin-top: 10px;
             cursor: pointer;
-            transition: 0.3s;
+            font-weight: bold;
         }
 
-        .checkout-btn:hover {
-            background-color: #43a047;
+        .summary-box {
+            background: #e8f7ed;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
         }
 
-        .empty-cart {
-            text-align: center;
-            color: #777;
-            font-size: 16px;
-            margin-top: 30px;
+        .summary-box h3 {
+            margin: 0 0 10px;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            background: #39b36e;
+            color: #fff;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 12px;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .place-order-btn:hover {
+            background: #2d995a;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="cart-section">
-            <h2>Your Cart</h2>
-            {% if cart_items %}
+
+    <div class="checkout-container">
+
+        <!-- Address Card -->
+        <div class="section">
+            <h2 class="section-title">Delivery Address</h2>
+
+            <div class="address-card">
+                <p><strong>{{ request.user.username }}</strong></p>
+                <p>{{ request.user.phone }}</p>
+                <p>{{ request.user.address }}</p>
+                <p>{{ request.user.pincode }}</p>
+
+                <a href="/edit-address/" class="edit-btn">Edit</a>
+            </div>
+        </div>
+
+        <!-- Cart Items Section -->
+        <div class="section">
+            <h2 class="section-title">Your Items</h2>
+
             {% for item in cart_items %}
-         
-            <div class="cart-item">
-                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
-                <div class="item-info">
-                    <h4>{{ item.product.name }}</h4>
-                    <p>{{ item.product.description|truncatechars:60 }}</p>
-                    <p>Eco Rating: <strong>🌱 {{ item.product.eco_rating }}/5</strong></p>
-                    <p class="price">₹{{ item.product.price }}</p>
-                </div>
-                <div class="quantity-control">
-                    <form action="{% url 'change_cart' item.id %}" method="POST"
-                        style="display:flex; align-items:center; gap:8px;">
-                        {% csrf_token %}
-                        <button type="submit" name="action" value="decrease">-</button>
-                        <span>{{ item.quantity }}</span>
-                        <button type="submit" name="action" value="increase">+</button>
-                    </form>
+            <div class="item-card">
+                <img src="{{ item.product.image.url }}" class="item-img">
+
+                <div>
+                    <p class="item-name">{{ item.product.name }}</p>
+                    <p class="item-qty">Quantity: {{ item.quantity }}</p>
+                    <p class="item-price">₹{{ item.total_price }}</p>
                 </div>
             </div>
             {% endfor %}
-            {% else %}
-            <p class="empty-cart">Your cart is empty 🛒</p>
-            {% endif %}
         </div>
-        <div class="summary-section">
-            <h2>Address</h2>
-            <p>{{address.user.address}}</p>
-            
 
-        </div>
-        <div class="summary-section">
-            <h2>Order Summary</h2>
-            <p><span>Subtotal</span> <span>₹{{ total_price }}</span></p>
-            <p><span>Delivery Fee</span> <span>₹50</span></p>
-            <hr>
-            <p class="total"><span>Total</span> <span>₹{{ total_price|add:50 }}</span></p>
-            <hr>
-            <form method="POST" action="{% url 'payment' %}">
-                {% csrf_token %}
-                <button type="submit" class="checkout-btn">Proceed to Payment</button>
-            </form>
+        <!--payment-->
+        <h2 class="section-title">Payment Method</h2>
 
-        </div>
+        <form action="{% url 'place_order' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="address" value="{{ request.user.address }}">
+            <!-- COD -->
+            <label class="payment-option">
+                <input type="radio" name="payment_method" value="COD" checked>
+                Cash on Delivery
+            </label>
+            <div id="cod-info" class="payment-box">
+                <p>Pay when the item is delivered to your address.</p>
+            </div>
+
+            <!-- UPI -->
+            <label class="payment-option">
+                <input type="radio" name="payment_method" value="UPI">
+                UPI (Google Pay / PhonePe / Paytm)
+            </label>
+
+            <div id="upi-box" class="payment-box" style="display:none;">
+                <input type="text" name="upi_id" placeholder="example@upi">
+                <button type="button" class="verify-btn">Verify UPI</button>
+            </div>
+
+            <!-- Debit / Credit Card -->
+            <label class="payment-option">
+                <input type="radio" name="payment_method" value="CARD">
+                Debit / Credit Card
+            </label>
+
+            <div id="card-box" class="payment-box" style="display:none;">
+                <input type="text" name="card_number" maxlength="16" placeholder="Card Number">
+                <input type="text" name="expiry" maxlength="5" placeholder="MM/YY">
+                <input type="password" name="cvv" maxlength="3" placeholder="CVV">
+            </div>
+
+
+
+            <!-- Order Summary Box -->
+            <div class="summary-box">
+                <h3>Order Summary</h3>
+                <p>Total Items: {{ cart_items.count }}</p>
+                <p>Total Amount: <strong>₹{{ total_amount }}</strong></p>
+            </div>
+
+            <button class="place-order-btn" type="submit">Place Order</button>
+
+        </form>
     </div>
+
+    </div>
+
+    <script>
+        const codInfo = document.getElementById("cod-info");
+        const upiBox = document.getElementById("upi-box");
+        const cardBox = document.getElementById("card-box");
+
+        const radios = document.querySelectorAll("input[name='payment_method']");
+
+        radios.forEach(radio => {
+            radio.addEventListener("change", () => {
+                codInfo.style.display = "none";
+                upiBox.style.display = "none";
+                cardBox.style.display = "none";
+
+                if (radio.value === "COD") {
+                    codInfo.style.display = "block";
+                }
+                else if (radio.value === "UPI") {
+                    upiBox.style.display = "block";
+                }
+                else if (radio.value === "CARD") {
+                    cardBox.style.display = "block";
+                }
+            });
+        });
+
+
+    </script>
+
 </body>
 
 </html>

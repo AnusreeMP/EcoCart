@@ -48,16 +48,23 @@ urlpatterns = [
     path('cart/', views.view_cart, name='cart'),
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('remove-from-cart/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
-    path('checkout/', views.checkout, name='checkout'),
+
+   
+
+    path('checkout/',views.checkout,name='checkout'),
     path('place-order/', views.place_order, name='place_order'),
+    path('order-success/<int:order_id>/', views.order_success, name='order_success'),
+    path('edit-address/', views.edit_address, name='edit_address'),
     path('buy-now/<int:product_id>/', views.buy_now, name='buy_now'),
-    # path('update-cart/<int:item_id>/', views.update_cart, name='update_cart'),
     path('change-cart/<int:product_id>/', views.change_cart, name='change_cart'),
     path('payment/', views.payment_page,name='payment'),
     path('payment-success/', views.mock_payment_success, name='payment_success'),
     path('add-to-wishlist/<int:product_id>/', views.add_to_wishlist, name='add_to_wishlist'),
     path('admin_view_products',views.admin_view_products, name='admin_view_products'),
     path('admin_view_blog/', views.admin_view_blog, name='admin_view_blog'),
+    path("admin_manage-orders/", views.admin_manage_orders, name="admin_manage_orders"),
+    path("admin/update-order/<int:order_id>/", views.update_order_status, name="update_order_status"),
+
 
     
 

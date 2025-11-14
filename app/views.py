@@ -2,11 +2,10 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .models import Blog
 from django.shortcuts import render, get_object_or_404
 from .models import Product,Category,CustomUser,Blog
 from django.contrib.auth import get_user_model
-from .models import Order,Wishlist,Cart
+from .models import  Cart,Order,OrderItem,Wishlist
 from django.contrib.auth.decorators import user_passes_test
 
 
@@ -14,8 +13,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
 def index(request):
-    # items = Product.objects.all()[:8]
-    items = []  # temporary placeholder
+    items = [] 
     return render(request, 'index.html', {'items': items})
 
 User = get_user_model()
@@ -186,11 +184,92 @@ def remove_from_cart(request, product_id):
     Cart.objects.filter(user=request.user, product=product).delete()
     return redirect('cart')
 
+
 def checkout(request):
     cart_items = Cart.objects.filter(user=request.user)
-    first_item = cart_items.first()
-    total_price = sum(item.total_price for item in cart_items)
-    return render(request, 'checkout.html', {'cart_items': cart_items, 'total_price': total_price,'address':first_item})
+    total_amount = sum(item.total_price for item in cart_items)
+
+    return render(request, "checkout.html", {
+        "cart_items": cart_items,
+        "total_amount": total_amount,
+    })
+
+
+def place_order(request):
+    if request.method == "POST":
+        payment_method = request.POST.get("payment_method")
+        address_order = request.POST.get("address")
+        print( "Address:", address_order)  # Debugging line
+
+        cart_items = Cart.objects.filter(user=request.user)
+
+        if not cart_items.exists():
+            messages.error(request, "Your cart is empty.")
+            return redirect("checkout")
+
+        # Create Order
+        order = Order.objects.create(
+            user=request.user,
+            address_order=address_order,
+            payment_method=payment_method,  # Temporary
+        )
+
+        # Save Order Items
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                quantity=item.quantity,
+                price=item.product.price,
+            )
+
+        # -------- PAYMENT HANDLING -------- #
+        payment = request.POST.get("payment_method")
+
+        if payment == "COD":
+            order.payment_method = "Cash on Delivery"
+
+        elif payment == "UPI":
+            upi_id = request.POST.get("upi_id")
+            order.payment_method = f"UPI - {upi_id}"
+
+        elif payment == "CARD":
+            card_number = request.POST.get("card_number")
+            expiry = request.POST.get("expiry")
+            cvv = request.POST.get("cvv")
+            safe_number = card_number[-4:] if card_number else "XXXX"
+            order.payment_method = f"Card Ending With {safe_number}"
+
+        order.save()
+
+        # Clear cart after ordering
+        cart_items.delete()
+
+        messages.success(request, "Order placed successfully!")
+        return redirect("order_success", order_id=order.id)
+
+
+    return redirect("checkout")
+
+def order_success(request, order_id):
+    order = Order.objects.get(id=order_id, user=request.user)
+    items = order.items.all()
+
+    return render(request, "order_success.html", {"order": order, "items": items})
+
+def edit_address(request):
+    if request.method == "POST":
+        new_address = request.POST.get("address")
+        user = request.user
+        user.address = new_address
+        user.save()
+        messages.success(request, "Address updated successfully!")
+        return redirect("checkout")
+    return render(request, "edit-address.html")
+
+
+
+
 
 def update_cart(request, item_id):
     if request.method == "POST":
@@ -214,22 +293,7 @@ def mock_payment_success(request):
     return redirect ('userhome')
 
 
-def place_order(request):
-    if request.method == 'POST':
-        payment_method = request.POST.get('payment_method')
-        cart_items = Cart.objects.filter(user=request.user)
 
-        for item in cart_items:
-            Order.objects.create(
-                user=request.user,
-                product_name=item.product.name,
-                quantity=item.quantity,
-                total_price=item.total_price,
-            )
-
-        cart_items.delete()
-        return render(request, 'order_success.html', {'payment_method': payment_method})
-    return redirect('checkout')
 
 
 
@@ -272,10 +336,13 @@ def product_list(request):
 def admin_login(request):
     if request.method == "POST":
         username = request.POST.get('username')
+        print("Username:", username)  # Debugging line
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+        print("Authenticated User:", user)  # Debugging line
 
         if user is not None and user.is_staff:
+            print("Admin login successful")  # Debugging line
             login(request, user)
             return redirect('admin_dashboard')
         else:
@@ -283,23 +350,11 @@ def admin_login(request):
     
     return render(request, 'admin_login.html')
 
-# def admin_dashboard(request):
-#     products = Product.objects.all()
-#     categories = Category.objects.all()
-#     users = CustomUser.objects.all()
-#     blogs = Blog.objects.all()
-#     return render(request, 'admin_dashboard.html', {
-#         'products': products,
-#         'categories': categories,
-#         'users': users,
-#         'blogs': blogs
-#     })
-
 
 
 
 def admin_dashboard(request):
-    if not request.user.is_staff:
+    if request.user.is_staff:
         
         context = {
             'products': Product.objects.all(),
@@ -313,6 +368,21 @@ def admin_dashboard(request):
 def admin_view_products(request):
     products = Product.objects.select_related('category').all()
     return render(request, 'adminviewproducts.html', {'products': products})
+
+def admin_manage_orders(request):
+    orders = Order.objects.all().order_by('-order_date')
+    return render(request, "admin_manage_orders.html", {"orders": orders})
+
+
+def update_order_status(request, order_id):
+    if request.method == "POST":
+        new_status = request.POST.get("status")
+        order = Order.objects.get(id=order_id)
+        order.status = new_status
+        order.save()
+        messages.success(request, "Order status updated successfully!")
+        return redirect("admin_manage_orders")
+
  
 
 def block_user(request, user_id):
@@ -447,7 +517,8 @@ def user_profile(request):
 
 def user_orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-order_date')
-    return render(request, 'user_orders.html', {'orders': orders})
+    return render(request, "user_orders.html", {"orders": orders})
+
 
 
 def order_detail(request, order_id):

@@ -69,7 +69,7 @@ class Order(models.Model):
     order_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"Order #{self.id} - {self.user.username}"
+        return f"Order #{self.id} - {self.user.username} -{self.address_order}"
 
     @property
     def total_amount(self):

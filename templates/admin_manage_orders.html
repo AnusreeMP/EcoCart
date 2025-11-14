@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Orders</title>
+    <style>
+        body {
+            font-family: Poppins, sans-serif;
+            background: #f5fff5;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #2e7d32;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2e7d32;
+            color: white;
+            padding: 12px;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .status-box {
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .Pending { background: #ff9800; }
+        .Confirmed { background: #0288d1; }
+        .Shipped { background: #673ab7; }
+        .Delivered { background: #2e7d32; }
+        .Cancelled { background: #d32f2f; }
+
+        .btn {
+            padding: 6px 10px;
+            background: #388e3c;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .btn:hover { background: #2e7d32; }
+
+        .product-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .select-status {
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid #4caf50;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Manage Orders</h1>
+
+<table>
+    <tr>
+        <th>Order ID</th>
+        <th>User</th>
+        <th>Address</th>
+        <th>Payment</th>
+        <th>Date</th>
+        <th>Items</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Update</th>
+    </tr>
+
+    {% for order in orders %}
+    <tr>
+        <td>#{{ order.id }}</td>
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.address_order }}</td>
+        <td>{{ order.payment_method }}</td>
+        <td>{{ order.order_date|date:"d M Y, h:i A" }}</td>
+
+        <td>
+            {% for item in order.items.all %}
+            <div style="margin-bottom:6px;">
+                <img src="{{ item.product.image.url }}" class="product-img">
+                {{ item.product.name }} (x{{ item.quantity }})
+            </div>
+            {% endfor %}
+        </td>
+
+        <td>₹{{ order.total_amount }}</td>
+
+        <td>
+            <span class="status-box {{ order.status }}">
+                {{ order.status }}
+            </span>
+        </td>
+
+        <td>
+            <form method="post" action="{% url 'update_order_status' order.id %}">
+                {% csrf_token %}
+                <select name="status" class="select-status">
+                    <option {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
+                    <option {% if order.status == 'Confirmed' %}selected{% endif %}>Confirmed</option>
+                    <option {% if order.status == 'Shipped' %}selected{% endif %}>Shipped</option>
+                    <option {% if order.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                    <option {% if order.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                </select>
+                <button type="submit" class="btn">Update</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

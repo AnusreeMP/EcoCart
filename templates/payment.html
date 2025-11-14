@@ -13,33 +13,54 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
     .payment-box {
       background: #fff;
       padding: 30px;
       border-radius: 12px;
-      width: 400px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      width: 420px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     h2 {
       color: #2f5132;
       text-align: center;
       border-bottom: 2px solid #4CAF50;
-      padding-bottom: 8px;
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      color: #333;
+      padding-bottom: 10px;
+      margin-bottom: 25px;
     }
     .payment-option {
+      background: #f7fdf9;
+      border: 1px solid #cde7d5;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      transition: 0.3s;
+    }
+    .payment-option:hover {
+      background: #e9f9ed;
+      border-color: #4CAF50;
     }
     input[type="radio"] {
       margin-right: 10px;
+    }
+    .option-label {
+      color: #2e2e2e;
+      font-weight: 500;
+    }
+    .hidden-fields {
+      display: none;
+      margin-top: 10px;
+    }
+    .hidden-fields input {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
     }
     .pay-btn {
       background-color: #4CAF50;
@@ -56,19 +77,125 @@
     .pay-btn:hover {
       background-color: #43a047;
     }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      display: none;
+    }
+    .spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #4CAF50;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .overlay p {
+      color: #2f5132;
+      font-size: 18px;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
   <div class="payment-box">
-    <h2>Payment Options</h2>
-    <form method="POST" action="{% url 'place_order' %}">
+    <h2>Secure Payment</h2>
+    <form id="paymentForm" method="POST" action="{% url 'payment_success' %}">
       {% csrf_token %}
-      <label><input type="radio" name="payment_method" value="UPI" required> UPI (Google Pay / PhonePe)</label>
-      <label><input type="radio" name="payment_method" value="Card"> Debit / Credit Card</label>
-      <label><input type="radio" name="payment_method" value="COD"> Cash on Delivery</label>
       
-      <button type="submit" class="pay-btn">Confirm & Place Order</button>
+      <!-- UPI -->
+      <div class="payment-option">
+        <input type="radio" name="payment_method" value="UPI" id="upi" required>
+        <label class="option-label" for="upi">💰 UPI (Google Pay / PhonePe)</label>
+      </div>
+      <div class="hidden-fields" id="upiFields">
+        <input type="text" id="upiInput" placeholder="Enter UPI ID (e.g., username@okaxis)">
+      </div>
+
+      <!-- CARD -->
+      <div class="payment-option">
+        <input type="radio" name="payment_method" value="Card" id="card">
+        <label class="option-label" for="card">💳 Debit / Credit Card</label>
+      </div>
+      <div class="hidden-fields" id="cardFields">
+        <input type="text" id="cardNumber" placeholder="Card Number">
+        <input type="text" id="expiry" placeholder="MM/YY">
+        <input type="text" id="cvv" placeholder="CVV">
+        <input type="text" id="holder" placeholder="Cardholder Name">
+      </div>
+
+      <!-- COD -->
+      <div class="payment-option">
+        <input type="radio" name="payment_method" value="COD" id="cod">
+        <label class="option-label" for="cod">🚚 Cash on Delivery</label>
+      </div>
+      <div class="hidden-fields" id="codFields">
+        <p style="font-size: 14px; color:#555;">Pay with cash when your order is delivered.</p>
+      </div>
+
+      <button type="submit" class="pay-btn">Pay Now</button>
     </form>
   </div>
+
+  <div class="overlay" id="overlay">
+    <div class="spinner"></div>
+    <p>Processing Payment...</p>
+  </div>
+
+  <script>
+    const form = document.getElementById("paymentForm");
+    const overlay = document.getElementById("overlay");
+
+    const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+    const fields = {
+      UPI: document.getElementById("upiFields"),
+      Card: document.getElementById("cardFields"),
+      COD: document.getElementById("codFields"),
+    };
+
+    // Hide all fields initially
+    function hideAll() {
+      for (let key in fields) {
+        fields[key].style.display = "none";
+        const inputs = fields[key].querySelectorAll("input");
+        inputs.forEach(i => i.removeAttribute("required"));
+      }
+    }
+    hideAll();
+
+    // Show relevant fields when radio selected
+    paymentRadios.forEach(radio => {
+      radio.addEventListener("change", () => {
+        hideAll();
+        const selected = radio.value;
+        fields[selected].style.display = "block";
+        const inputs = fields[selected].querySelectorAll("input");
+        inputs.forEach(i => i.setAttribute("required", "required"));
+      });
+    });
+
+    // Simulate payment process
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      overlay.style.display = "flex";
+      setTimeout(() => {
+        form.submit();
+      }, 3000);
+    });
+  </script>
 </body>
 </html>

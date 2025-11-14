@@ -52,8 +52,6 @@ def register(request):
 
     return render(request, 'registration.html')
 
-
-
 def login_page(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -62,14 +60,22 @@ def login_page(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
+            # ✅ Block admin users from logging in through this page
+            if user.is_superuser or user.is_staff:
+                messages.error(request, "Admins must log in from the admin panel.")
+                return redirect('login')
+
+            # ✅ Normal user login
             login(request, user)
             messages.success(request, f"Welcome back, {user.username}!")
-            return redirect('userhome')  
+            return redirect('userhome')
+
         else:
             messages.error(request, "Invalid username or password.")
             return redirect('login')
 
-    return render(request,'login.html')
+    return render(request, 'login.html')
+
 
 def logout_user(request):
     logout(request)
@@ -85,6 +91,11 @@ def add_blog(request):
         messages.success(request, "Blog added successfully!")
         return redirect('admin_dashboard')
     return render(request, 'add_blog.html')
+
+
+def admin_view_blog(request):
+    blogs = Blog.objects.all()
+    return render(request, 'admin_view_blog.html', {'blogs': blogs})
 
 def edit_blog(request, blog_id):
     blog = get_object_or_404(Blog, id=blog_id)
@@ -177,8 +188,9 @@ def remove_from_cart(request, product_id):
 
 def checkout(request):
     cart_items = Cart.objects.filter(user=request.user)
+    first_item = cart_items.first()
     total_price = sum(item.total_price for item in cart_items)
-    return render(request, 'checkout.html', {'cart_items': cart_items, 'total_price': total_price})
+    return render(request, 'checkout.html', {'cart_items': cart_items, 'total_price': total_price,'address':first_item})
 
 def update_cart(request, item_id):
     if request.method == "POST":
@@ -192,12 +204,14 @@ def update_cart(request, item_id):
         cart_item.save()
     return redirect('checkout')
 
-def payment(request):
+def payment_page(request):
+    return render(request, 'payment.html')
+
+def mock_payment_success(request):
     if request.method == 'POST':
-        cart_items = Cart.objects.filter(user=request.user)
-        total_price = sum(item.total_price for item in cart_items) + 50  
-        return render(request, 'payment.html', {'cart_items': cart_items, 'total_price': total_price})
-    return redirect('checkout')
+        return render(request, 'payment_success.html')
+    return render(request,'payment.html')
+    return redirect ('userhome')
 
 
 def place_order(request):
@@ -296,6 +310,11 @@ def admin_dashboard(request):
         return render(request, 'admin_dashboard.html', context)
     return redirect('admin_login')
 
+def admin_view_products(request):
+    products = Product.objects.select_related('category').all()
+    return render(request, 'adminviewproducts.html', {'products': products})
+ 
+
 def block_user(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
     user.is_active = False
@@ -311,7 +330,6 @@ def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user.delete()
     return redirect('admin_dashboard')
-
 
 def add_product(request):
     if request.method == 'POST':
@@ -430,6 +448,11 @@ def user_profile(request):
 def user_orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-order_date')
     return render(request, 'user_orders.html', {'orders': orders})
+
+
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'order_detail.html', {'order': order})
  
 def wishlist(request):
     sort_by = request.GET.get('sort', 'newest')

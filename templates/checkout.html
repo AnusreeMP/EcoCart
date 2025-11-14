@@ -163,6 +163,7 @@
             <h2>Your Cart</h2>
             {% if cart_items %}
             {% for item in cart_items %}
+         
             <div class="cart-item">
                 <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
                 <div class="item-info">
@@ -186,7 +187,12 @@
             <p class="empty-cart">Your cart is empty 🛒</p>
             {% endif %}
         </div>
+        <div class="summary-section">
+            <h2>Address</h2>
+            <p>{{address.user.address}}</p>
+            
 
+        </div>
         <div class="summary-section">
             <h2>Order Summary</h2>
             <p><span>Subtotal</span> <span>₹{{ total_price }}</span></p>

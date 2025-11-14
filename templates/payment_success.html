@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Payment Success | EcoCart</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f1f8f4;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2f5132;
+        }
+
+        p {
+            color: #555;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        a:hover {
+            background: #43a047;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h2>✅ Payment Successful!</h2>
+        <p>Thank you for shopping with EcoCart. Your order has been placed successfully.</p>
+        <a href="{% url 'userhome' %}">Continue Shopping</a>
+    </div>
+</body>
+
+</html>

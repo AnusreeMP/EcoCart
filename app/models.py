@@ -45,6 +45,9 @@ class Blog(models.Model):
 
 
 # 🛒 Cart Model
+
+from django.utils import timezone
+
 class Cart(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -57,16 +60,36 @@ class Cart(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.product.name} ({self.quantity})"
 
+
 class Order(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    product_name = models.CharField(max_length=100)
-    quantity = models.PositiveIntegerField(default=1)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    address_order = models.CharField(max_length=255, null=True, blank=True)
+    payment_method = models.CharField(max_length=50, default='COD')
     status = models.CharField(max_length=20, default='Pending')
-    order_date = models.DateTimeField(auto_now_add=True)
+    order_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.product_name} - {self.user.username}"
+        return f"Order #{self.id} - {self.user.username}"
+
+    @property
+    def total_amount(self):
+        total = sum(item.total_price for item in self.items.all())
+        return total
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    @property
+    def total_price(self):
+        return self.quantity * self.price
+
+    def __str__(self):
+        return f"{self.product.name} (x{self.quantity})"
+
 
 class Wishlist(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

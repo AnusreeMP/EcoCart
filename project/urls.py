@@ -27,6 +27,7 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('profile/', views.user_profile, name='user_profile'),
     path('orders/', views.user_orders, name='user_orders'),
+    path('order/<int:order_id>/', views.order_detail, name='order_detail'),
     path('wishlist/', views.wishlist, name='wishlist'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
@@ -52,8 +53,12 @@ urlpatterns = [
     path('buy-now/<int:product_id>/', views.buy_now, name='buy_now'),
     # path('update-cart/<int:item_id>/', views.update_cart, name='update_cart'),
     path('change-cart/<int:product_id>/', views.change_cart, name='change_cart'),
-    path('payment/', views.payment, name='payment'),
+    path('payment/', views.payment_page,name='payment'),
+    path('payment-success/', views.mock_payment_success, name='payment_success'),
     path('add-to-wishlist/<int:product_id>/', views.add_to_wishlist, name='add_to_wishlist'),
+    path('admin_view_products',views.admin_view_products, name='admin_view_products'),
+    path('admin_view_blog/', views.admin_view_blog, name='admin_view_blog'),
+
     
 
 

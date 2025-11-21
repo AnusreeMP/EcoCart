@@ -208,6 +208,27 @@
         .add-cart-btn:hover {
             background: #43a047;
         }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            width: 40%;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            border: none;
+            background:white;
+            color: green;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -217,27 +238,17 @@
     <header>
         <a href="#" class="logo">🌿 EcoCart</a>
 
-        <form class="search-filter" method="GET" action="{% url 'search' %}">
-            <input type="text" name="query" placeholder="Search eco-friendly products..."
-                value="{{ request.GET.query }}">
-            <select name="category">
-                <option value="">All Categories</option>
-                {% for category in categories %}
-                {% if request.GET.category|stringformat:"s" == category.name|stringformat:"s" %}
-                <option value="{{ category.name }}" selected>{{ category.name }}</option>
-                {% else %}
-                <option value="{{ category.name }}">{{ category.name }}</option>
-                {% endif %}
-                {% endfor %}
-            </select>
-
+        <form method="GET" action="{% url 'search' %}" class="search-bar">
+            <input type="text" name="q" placeholder="Search for products" value="{{ query }}">
             <button type="submit">Search</button>
         </form>
 
         <div class="right-icons">
-            <a href="{% url 'wishlist' %}" class="heart-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-</svg></a>
+            <a href="{% url 'wishlist' %}" class="heart-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                    height="16" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                </svg></a>
 
             <div class="dropdown">
                 <button class="dropbtn">👤</button>
@@ -254,12 +265,11 @@
         </div>
     </header>
 
-    <!-- Product Grid -->   
+    <!-- Product Grid -->
     <section class="product-grid">
         {% for product in products %}
         <div class="product-card">
-            <button class="wishlist-btn {% if product in user_wishlist %}active{% endif %}"
-                onclick="toggleWishlist({{ product.id }})">
+            <button class="wishlist-btn {% if product.id in user_wishlist_ids %}active{% endif %}" onclick="toggleWishlist({{ product.id }})">
                 <i class="fa-solid fa-heart"></i>
             </button>
             <img src="{{ product.image.url }}" alt="{{ product.name }}">

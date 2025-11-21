@@ -178,12 +178,7 @@
     <h3 style="color:#1b5e20; margin-top:25px;">Order Tracking</h3>
 
     <div class="tracking-step completed">✔ Order Placed</div>
-    <div class="tracking-step {% if order.status == 'Shipped' or order.status == 'Completed' %}completed{% endif %}">
-        📦 Shipped
-    </div>
-    <div class="tracking-step {% if order.status == 'Completed' %}completed{% endif %}">
-        ✅ Delivered
-    </div>
+
 
     <a href="{% url 'user_orders' %}" class="back-btn">← Back to My Orders</a>
 </div>

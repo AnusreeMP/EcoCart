@@ -44,8 +44,9 @@
         }
 
         .Pending { background: #ff9800; }
-        .Confirmed { background: #0288d1; }
+        .Packed { background: #8bc34a; }
         .Shipped { background: #673ab7; }
+        .Out_for_Delivery { background: #099cdf ;}
         .Delivered { background: #2e7d32; }
         .Cancelled { background: #d32f2f; }
 
@@ -117,17 +118,19 @@
         </td>
 
         <td>
-            <form method="post" action="{% url 'update_order_status' order.id %}">
-                {% csrf_token %}
-                <select name="status" class="select-status">
-                    <option {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
-                    <option {% if order.status == 'Confirmed' %}selected{% endif %}>Confirmed</option>
-                    <option {% if order.status == 'Shipped' %}selected{% endif %}>Shipped</option>
-                    <option {% if order.status == 'Delivered' %}selected{% endif %}>Delivered</option>
-                    <option {% if order.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
-                </select>
-                <button type="submit" class="btn">Update</button>
-            </form>
+            <form action="{% url 'update_order_status' order.id %}" method="POST">
+       {% csrf_token %}
+    <select name="status">
+        <option value="Pending" {% if order.status == "Pending" %}selected{% endif %}>Pending</option>
+        <option value="Packed" {% if order.status == "Packed" %}selected{% endif %}>Packed</option>
+        <option value="Shipped" {% if order.status == "Shipped" %}selected{% endif %}>Shipped</option>
+        <option value="Out_for_Delivery" {% if order.status == "Out_for_Delivery" %}selected{% endif %}>Out for Delivery</option>
+        <option value="Delivered" {% if order.status == "Delivered" %}selected{% endif %}>Delivered</option>
+        <option value="Cancelled" {% if order.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+    </select>
+    <button type="submit" class="btn btn-success">Update</button>
+</form>
+
         </td>
     </tr>
     {% endfor %}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,8 +54,15 @@
         }
 
         @keyframes fadeIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .popup h2 {
@@ -97,16 +105,14 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="address-box">
         <strong>Your Address</strong>
         <span class="edit-btn" onclick="openPopup()">Edit</span>
         <p id="displayAddress">
-            Anusree MP,<br>
-            Palakkad, Kerala<br>
-            678001<br>
-            Phone: 9876543210
+            {{ user.address }}
         </p>
     </div>
 
@@ -150,4 +156,5 @@
         }
     </script>
 </body>
+
 </html>

@@ -7,6 +7,8 @@ from .models import Product,Category,CustomUser,Blog
 from django.contrib.auth import get_user_model
 from .models import  Cart,Order,OrderItem,Wishlist
 from django.contrib.auth.decorators import user_passes_test
+from django.db.models import Q
+
 
 
 
@@ -258,6 +260,7 @@ def order_success(request, order_id):
     return render(request, "order_success.html", {"order": order, "items": items})
 
 def edit_address(request):
+    user = request.user
     if request.method == "POST":
         new_address = request.POST.get("address")
         user = request.user
@@ -265,7 +268,7 @@ def edit_address(request):
         user.save()
         messages.success(request, "Address updated successfully!")
         return redirect("checkout")
-    return render(request, "edit-address.html")
+    return render(request, "edit-address.html", {"user": user})
 
 
 
@@ -330,6 +333,12 @@ def product_detail(request, product_id):
 def product_list(request):
     products = Product.objects.all()
     return render(request, 'products.html', {'products': products})
+    wishlist_ids = Wishlist.objects.filter(user=request.user).values_list("product_id", flat=True)
+    return render(request, "products.html", {
+    "products": products,
+    "user_wishlist_ids": wishlist_ids
+})
+
 
 
 
@@ -360,7 +369,7 @@ def admin_dashboard(request):
             'products': Product.objects.all(),
             'categories': Category.objects.all(),
             'blogs': Blog.objects.all(),
-            'users': CustomUser.objects.all(),
+            'users': CustomUser.objects.filter(is_staff=False),
         }
         return render(request, 'admin_dashboard.html', context)
     return redirect('admin_login')
@@ -374,14 +383,30 @@ def admin_manage_orders(request):
     return render(request, "admin_manage_orders.html", {"orders": orders})
 
 
+
 def update_order_status(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
     if request.method == "POST":
         new_status = request.POST.get("status")
-        order = Order.objects.get(id=order_id)
         order.status = new_status
         order.save()
-        messages.success(request, "Order status updated successfully!")
-        return redirect("admin_manage_orders")
+        return redirect("admin_manage_orders")   # your admin order table page
+
+    # SHOW THE STATUS UPDATE PAGE
+    return render(request, "update_order_status.html", {"order": order})
+
+
+def update_status(request, id):
+    order = get_object_or_404(Order, id=id)
+
+    if request.method == "POST":
+        status = request.POST.get("status")
+        order.status = status
+        order.save()
+        return redirect('admin_page')  # change to your admin orders page name
+
+    return redirect('admin_page')
 
  
 
@@ -502,13 +527,21 @@ def userhome(request):
     })
 
 
-
 def search(request):
-    query = request.GET.get('q')
-    results = []
-    if query:
-        results = Product.objects.filter(name__icontains=query)
-    return render(request, 'userhome.html', {'products': products, 'query': query})
+    query = request.GET.get('q', '')
+
+    results = Product.objects.filter(
+        Q(name__icontains=query) |
+        Q(description__icontains=query) |
+        Q(category__name__icontains=query) |
+        Q(eco_rating__icontains=query)
+    ).distinct()
+
+    return render(request, 'userhome.html', {
+        'products': results,
+        'query': query
+    })
+
 
 
 def user_profile(request):
@@ -566,12 +599,25 @@ def add_to_wishlist(request, id):
 
     return redirect('wishlist')
 
+def remove_wishlist(request, item_id):
+    item = get_object_or_404(Wishlist, id=item_id, user=request.user)
+    item.delete()
+    return redirect("wishlist")
+
+
 def toggle_wishlist(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    wishlist, created = Wishlist.objects.get_or_create(user=request.user, product=product)
-    if not created:
-        wishlist.delete()
-    return redirect('wishlist')
+
+    wishlist_item = Wishlist.objects.filter(user=request.user, product=product)
+
+    if wishlist_item.exists():
+        wishlist_item.delete()
+        messages.success(request, "Removed from Wishlist")
+    else:
+        Wishlist.objects.create(user=request.user, product=product)
+        messages.success(request, "Added to Wishlist")
+
+    return redirect(request.META.get("HTTP_REFERER", "userhome"))
 
 
 def about(request):

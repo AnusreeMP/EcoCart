@@ -18,7 +18,7 @@ urlpatterns = [
     path('add-product/', views.add_product, name='add_product'),
     path('edit-product/<int:product_id>/', views.edit_product, name='edit_product'),
     path('delete-product/<int:id>/', views.delete_product, name='delete_product'),
-    path('manage-categories/', views.manage_categories, name='manage_categories'),
+    path('manage_categories/', views.manage_categories, name='manage_categories'),
     path('add-category/', views.add_category, name='add_category'),
     path('edit-category/<int:id>/', views.edit_category, name='edit_category'),
     path('delete-category/<int:id>/', views.delete_category, name='delete_category'),
@@ -29,6 +29,8 @@ urlpatterns = [
     path('orders/', views.user_orders, name='user_orders'),
     path('order/<int:order_id>/', views.order_detail, name='order_detail'),
     path('wishlist/', views.wishlist, name='wishlist'),
+    path("wishlist/toggle/<int:product_id>/", views.toggle_wishlist, name="toggle_wishlist"),
+    path("wishlist/remove/<int:item_id>/", views.remove_wishlist, name="remove_wishlist"),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('blog-list/', views.blog_list, name='blog_list'),
@@ -63,7 +65,9 @@ urlpatterns = [
     path('admin_view_products',views.admin_view_products, name='admin_view_products'),
     path('admin_view_blog/', views.admin_view_blog, name='admin_view_blog'),
     path("admin_manage-orders/", views.admin_manage_orders, name="admin_manage_orders"),
-    path("admin/update-order/<int:order_id>/", views.update_order_status, name="update_order_status"),
+    path('update-order-status/<int:order_id>/', views.update_order_status, name='update_order_status'),
+    path('update-status/<int:id>/', views.update_status, name='update_status'),
+
 
 
     

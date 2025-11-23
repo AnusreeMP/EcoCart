@@ -1,113 +1,199 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | EcoCart</title>
+
     <style>
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            background: url("{% static 'images/eco_bg.jpg' %}") no-repeat center center/cover;
-            color: #333;
+            background: #f4f7f5;
         }
 
+        /* Header */
         header {
-            background-color: rgba(46, 125, 50, 0.95);
-            color: white;
+            background-color: green;
             padding: 15px 50px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            color: white;
         }
 
         .logo {
-            font-size: 26px;
+            font-size: 30px;
             font-weight: 700;
-            color: #fff;
+            color: white;
             text-decoration: none;
         }
 
         nav a {
             color: white;
-            text-decoration: none;
             margin: 0 15px;
+            text-decoration: none;
             font-weight: 500;
+            font-size: 16px;
         }
 
         nav a:hover {
             text-decoration: underline;
         }
 
-        .content {
-            max-width: 900px;
-            background: rgba(255, 255, 255, 0.9);
-            margin: 80px auto;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .content h1 {
-            color: #2e7d32;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .content p {
-            text-align: justify;
-            line-height: 1.8;
-            font-size: 16px;
-        }
-
-        footer {
-            background-color: #2e7d32;
+        /* Hero Section */
+        .hero-section {
+            background: url("{% static 'images/pic.jpg' %}") center/cover no-repeat;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            text-align: center;
-            padding: 15px 0;
-            position: relative;
-            bottom: 0;
-            width: 100%;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+            font-size: 36px;
+            font-weight: 700;
+
+        }
+
+        /* Main Content */
+        .about-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-container h2 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+
+        .about-container p {
+            line-height: 1.7;
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 20px;
         }
 
         .highlight {
             color: #2e7d32;
             font-weight: 600;
         }
+
+        /* Features Section */
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-box {
+            flex: 1;
+            min-width: 250px;
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .feature-box h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .feature-box p {
+            font-size: 15px;
+            color: #444;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2e7d32;
+            color: white;
+            text-align: center;
+            padding: 18px 0;
+            margin-top: 30px;
+        }
     </style>
 </head>
+
 <body>
+
     <header>
         <a href="{% url 'index' %}" class="logo">🌿 EcoCart</a>
+
         <nav>
             <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'shop' %}">Shop</a>
             <a href="{% url 'about' %}">About</a>
             <a href="{% url 'contact' %}">Contact</a>
-            
         </nav>
     </header>
 
-    <div class="content">
-        <h1>About EcoCart</h1>
+    <!-- Hero Banner -->
+    <div class="hero-section">
+        About EcoCart
+    </div>
+
+    <!-- About Section -->
+    <div class="about-container">
+        <h2>Who We Are</h2>
         <p>
-            Welcome to <span class="highlight">EcoCart</span> — your one-stop destination for sustainable, 
-            eco-friendly shopping. We believe that small choices can make a big difference in protecting our planet. 
-            Every product listed here is carefully chosen to promote a greener, cleaner, and more sustainable lifestyle.
+            <span class="highlight">EcoCart</span> is an eco-friendly online marketplace bringing
+            sustainable products right to your doorstep. We combine practicality, affordability,
+            and environmental responsibility so you can shop guilt-free.
         </p>
+
+        <h2>Our Mission</h2>
         <p>
-            Our mission is simple: <strong>to make eco-friendly shopping easy, affordable, and accessible</strong>. 
-            Whether you’re looking for reusable household items, natural products, or eco-conscious gifts, 
-            EcoCart ensures every product helps reduce waste and supports a healthier Earth.
+            Our goal is to make eco-friendly options easy and accessible for everyone.
+            From reusable home products to natural personal care, every item is carefully selected
+            to reduce waste and support healthier living.
         </p>
+
+        <h2>Why Choose EcoCart?</h2>
+
+        <div class="features">
+            <div class="feature-box">
+                <h3>🌱 Sustainable Products</h3>
+                <p>All items are made from eco-friendly, natural or recycled materials.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>💚 Trusted Quality</h3>
+                <p>Tested for durability, safety, and real-life use — no compromises.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>🚚 Fast & Reliable Delivery</h3>
+                <p>We ship responsibly and ensure your products reach you safely.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3>♻️ Affordable & Eco-Safe</h3>
+                <p>Eco-friendly living shouldn’t be expensive — we keep it budget-friendly.</p>
+            </div>
+        </div>
+
+        <h2>Our Vision</h2>
         <p>
-            Together, let’s create a world where style meets sustainability.  
-            🌱 Shop responsibly. Live consciously. Love the planet.
+            To build a community where sustainability becomes a lifestyle,
+            not just a trend. Together, we can create a world where
+            every purchase supports the planet.
         </p>
     </div>
 
     <footer>
-        © 2025 EcoCart | Built with 💚 for a better tomorrow.
+        © 2025 EcoCart | Sustainable shopping for a better tomorrow.
     </footer>
+
 </body>
+
 </html>

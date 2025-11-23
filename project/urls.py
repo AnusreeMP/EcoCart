@@ -31,9 +31,10 @@ urlpatterns = [
     path('wishlist/', views.wishlist, name='wishlist'),
     path("wishlist/toggle/<int:product_id>/", views.toggle_wishlist, name="toggle_wishlist"),
     path("wishlist/remove/<int:item_id>/", views.remove_wishlist, name="remove_wishlist"),
+    path('wishlist/add-to-cart/<int:item_id>/', views.add_to_cart_from_wishlist, name='add_to_cart_from_wishlist'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
-    path('blog-list/', views.blog_list, name='blog_list'),
+    # path('blog-list/', views.blog_list, name='blog_list'),
     path('blog-detail/<int:blog_id>/', views.blog_detail, name='blog_detail'),
     path('add-blog/', views.add_blog, name='add_blog'),
     path('edit-blog/<int:blog_id>/', views.edit_blog, name='edit_blog'),
@@ -50,9 +51,8 @@ urlpatterns = [
     path('cart/', views.view_cart, name='cart'),
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('remove-from-cart/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
-
-   
-
+    
+    path('remove-item/<int:item_id>/', views.remove_item, name='remove_item'),
     path('checkout/',views.checkout,name='checkout'),
     path('place-order/', views.place_order, name='place_order'),
     path('order-success/<int:order_id>/', views.order_success, name='order_success'),

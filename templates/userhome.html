@@ -77,6 +77,14 @@
             color: #ffb3b3;
         }
 
+        .heart-btn {
+            border: none;
+            background: transparent;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+
         .cart-btn {
             background: #fff;
             color: #2e7d32;
@@ -183,16 +191,17 @@
             position: absolute;
             top: 12px;
             right: 12px;
+            font-size: 22px;
             background: none;
             border: none;
             cursor: pointer;
-            color: #888;
-            font-size: 18px;
+            color: #ccc;
         }
 
         .wishlist-btn.active {
             color: red;
         }
+
 
         .add-cart-btn {
             background: #4CAF50;
@@ -225,7 +234,7 @@
         .search-bar button {
             padding: 10px 20px;
             border: none;
-            background:white;
+            background: white;
             color: green;
             cursor: pointer;
         }
@@ -236,7 +245,7 @@
 
     <!-- Header -->
     <header>
-        <a href="#" class="logo">🌿 EcoCart</a>
+        <a href="{% url 'index' %}" class="logo">🌿 EcoCart</a>
 
         <form method="GET" action="{% url 'search' %}" class="search-bar">
             <input type="text" name="q" placeholder="Search for products" value="{{ query }}">
@@ -266,32 +275,83 @@
     </header>
 
     <!-- Product Grid -->
-    <section class="product-grid">
+    <div class="product-grid">
         {% for product in products %}
         <div class="product-card">
-            <button class="wishlist-btn {% if product.id in user_wishlist_ids %}active{% endif %}" onclick="toggleWishlist({{ product.id }})">
-                <i class="fa-solid fa-heart"></i>
-            </button>
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-            <h3>{{ product.name }}</h3>
-            <p>{{ product.description|truncatechars:50 }}</p>
-            <p class="price">₹{{ product.price }}</p>
 
+            <!-- Wishlist Button -->
+            <a href="{% url 'toggle_wishlist' product.id %}"
+                class="wishlist-btn {% if product.id in user_wishlist_ids %}active{% endif %}">
+                {% if product.id in user_wishlist_ids %}
+                ❤️
+                {% else %}
+                🤍
+                {% endif %}
+            </a>
+
+            <!-- Product Image -->
+            <a href="{% url 'product_detail' product.id %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            </a>
+
+            <!-- Product Name -->
+            <h3>{{ product.name }}</h3>
+
+            <!-- Description -->
+            <p>{{ product.description|truncatechars:50 }}</p>
+
+            <!-- Price -->
+            <div class="price">₹{{ product.price }}</div>
+
+            <!-- Add to Cart -->
             <form method="POST" action="{% url 'add_to_cart' product.id %}">
                 {% csrf_token %}
                 <button class="add-cart-btn" type="submit">Add to Cart</button>
             </form>
+
         </div>
         {% endfor %}
+    </div>
+
     </section>
 
-    <script>
-        function toggleWishlist(productId) {
-            fetch(`/wishlist/toggle/${productId}/`)
-                .then(response => location.reload());
-        }
-    </script>
 
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.startsWith(name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        // function toggleWishlist(productId) {
+        //     fetch(`/toggle-wishlist/${productId}/`, {
+        //         method: "POST",
+        //         headers: {
+        //             "X-CSRFToken": "{{ csrf_token }}"
+        //         }
+        //     })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             let btn = document.getElementById(`wishlist-icon-${productId}`);
+
+        //             if (data.added) {
+        //                 btn.classList.add("active");
+        //                 btn.innerHTML = "❤️";   // red heart
+        //             } else {
+        //                 btn.classList.remove("active");
+        //                 btn.innerHTML = "🤍";   // white heart
+        //             }
+        //         });
+        // }
+
+    </script>
 </body>
 
 </html>

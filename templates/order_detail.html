@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,18 +15,22 @@
         }
 
         header {
-            background: #2e7d32;
+            background-color: #2e7d32;
             color: white;
-            padding: 15px 30px;
+            padding: 15px 50px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
         }
 
         .logo {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
+            color: white;
+            cursor: pointer;
+            /* so user knows it's clickable */
         }
+
 
         .container {
             max-width: 900px;
@@ -71,9 +76,20 @@
             border-radius: 8px;
         }
 
-        .status.Pending { background: #fff3cd; color: #856404; }
-        .status.Completed { background: #d4edda; color: #155724; }
-        .status.Cancelled { background: #f8d7da; color: #721c24; }
+        .status.Pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status.Completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.Cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
 
         .summary-box {
             background: #f1f8f4;
@@ -118,74 +134,77 @@
             color: #1b5e20;
         }
     </style>
-
 </head>
+
 <body>
+    <header>
+        <span class="logo" onclick="goHome()">🌿 EcoCart</span>
+        <div>
+            <a href="{% url 'userhome' %}" style="color:white; text-decoration:none; margin-right: 15px;">Home</a>
+            <a href="{% url 'user_orders' %}" style="color:white; text-decoration:none;">My Orders</a>
+        </div>
 
-<header>
-    <div class="logo">🌿 EcoCart</div>
-    <div>
-        <a href="{% url 'userhome' %}" style="color:white; text-decoration:none; margin-right: 15px;">Home</a>
-        <a href="{% url 'user_orders' %}" style="color:white; text-decoration:none;">My Orders</a>
+        <script>
+            function goHome() {
+                window.location.href = "{% url 'userhome' %}";
+            }
+        </script>
+    </header>
+
+
+    <div class="container">
+        <h2>Order Details</h2>
+
+        {% for item in order.items.all %}
+        <div class="item-card">
+            <img src="{{ item.product.image.url }}" alt="Product Image">
+            <div class="item-details">
+                <h3>{{ item.product.name }}</h3>
+                <p>Price: ₹{{ item.price }}</p>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>Total: <strong>₹{{ item.total_price }}</strong></p>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="summary-box">
+            <div class="summary-row">
+                <span>Order Status:</span>
+                <span class="status {{ order.status }}">{{ order.status }}</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Payment Method:</span>
+                <strong>{{ order.payment_method }}</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Order Date:</span>
+                <strong>{{ order.order_date|date:"d M Y, h:i A" }}</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Delivery Address:</span>
+                <strong>{{ order.address_order }}</strong>
+            </div>
+
+            <div class="summary-row" style="border-top:2px solid #c8e6c9; margin-top:10px; padding-top:10px;">
+                <span>Total Order Amount:</span>
+                <strong>₹{{ order.total_amount }}</strong>
+            </div>
+        </div>
+
+        <h3 style="color:#1b5e20; margin-top:25px;">Order Tracking</h3>
+
+        <div class="tracking-step completed">✔ Order Placed</div>
+
+        <a href="{% url 'user_orders' %}" class="back-btn">← Back to My Orders</a>
     </div>
-</header>
 
-<div class="container">
-    <h2>Order Details</h2>
-
-    <!-- LOOP THROUGH ALL PRODUCTS IN THE ORDER -->
-    {% for item in order.items.all %}
-    <div class="item-card">
-        <img src="{{ item.product.image.url }}" alt="Product Image">
-        <div class="item-details">
-            <h3>{{ item.product.name }}</h3>
-            <p>Price: ₹{{ item.price }}</p>
-            <p>Quantity: {{ item.quantity }}</p>
-            <p>Total: <strong>₹{{ item.total_price }}</strong></p>
-        </div>
-    </div>
-    {% endfor %}
-
-    <!-- ORDER SUMMARY -->
-    <div class="summary-box">
-        <div class="summary-row">
-            <span>Order Status:</span>
-            <span class="status {{ order.status }}">{{ order.status }}</span>
-        </div>
-
-        <div class="summary-row">
-            <span>Payment Method:</span>
-            <strong>{{ order.payment_method }}</strong>
-        </div>
-
-        <div class="summary-row">
-            <span>Order Date:</span>
-            <strong>{{ order.order_date|date:"d M Y, h:i A" }}</strong>
-        </div>
-
-        <div class="summary-row">
-            <span>Delivery Address:</span>
-            <strong>{{ order.address_order }}</strong>
-        </div>
-
-        <div class="summary-row" style="border-top:2px solid #c8e6c9; margin-top:10px; padding-top:10px;">
-            <span>Total Order Amount:</span>
-            <strong>₹{{ order.total_amount }}</strong>
-        </div>
-    </div>
-
-    <!-- TRACKING -->
-    <h3 style="color:#1b5e20; margin-top:25px;">Order Tracking</h3>
-
-    <div class="tracking-step completed">✔ Order Placed</div>
-
-
-    <a href="{% url 'user_orders' %}" class="back-btn">← Back to My Orders</a>
-</div>
-
-<footer>
-    © 2025 EcoCart | Green Shopping for a Better Planet 🌎
-</footer>
+    <footer>
+        © 2025 EcoCart | Green Shopping for a Better Planet 🌎
+    </footer>
 
 </body>
+
 </html>

@@ -34,7 +34,6 @@
     <!-- 🌿 Navbar -->
     <nav class="bg-mainGreen text-white flex items-center justify-between px-8 py-4 shadow-md relative">
         <div class="text-2xl font-semibold">🌿 EcoCart</div>
-
         <ul class="hidden md:flex space-x-8 text-lg">
             <li><a href="" class="hover:text-accentBeige">Home</a></li>
             <li><a href="{% url 'shop' %}" class="hover:text-accentBeige">Shop</a></li>
@@ -42,7 +41,6 @@
             <li><a href="{% url 'about' %}" class="hover:text-accentBeige">About</a></li>
             <li><a href="{% url 'contact' %}" class="hover:text-accentBeige">Contact</a></li>
         </ul>
-
         <!-- 🌸 Right Side Icons -->
         <div class="flex items-center gap-5">
             <div class="dropdown">
@@ -56,28 +54,26 @@
                     <li><a href="{% url 'login' %}" class="block px-4 py-2 hover:bg-green-100 text-sm">Login</a></li>
                 </ul>
             </div>
-
-
+        </div>
     </nav>
-    {% block content%}
 
+    {% block content %}
     <!-- 🌎 Hero Section -->
     <section class="relative h-[90vh] flex items-center justify-center text-center text-white">
         <img src="{% static 'images/hero-bg.jpg' %}" alt="Hero background"
             class="absolute inset-0 w-full h-full object-cover">
         <div class="absolute inset-0 bg-mainGreen opacity-50"></div>
-
         <div class="relative z-10">
             <h1 class="text-4xl md:text-6xl font-bold mb-4">Be an Earth Hero</h1>
             <p class="text-lg md:text-xl max-w-xl mx-auto mb-6">Buy Green. Live Clean. Save the Planet — one
                 eco-friendly
                 product at a time.</p>
-         <a href="{% url 'products' %}">
-        <button class="bg-accentBeige text-mainGreen px-6 py-2 font-semibold rounded-lg hover:bg-yellow-100 transition">
-        Explore Products
-    </button>
-</a>
-
+            <a href="{% url 'products' %}">
+                <button
+                    class="bg-accentBeige text-mainGreen px-6 py-2 font-semibold rounded-lg hover:bg-yellow-100 transition">
+                    Explore Products
+                </button>
+            </a>
         </div>
     </section>
 
@@ -86,7 +82,6 @@
         <h2 class="text-3xl font-bold text-mainGreen mb-4">Why Choose EcoCart?</h2>
         <p class="max-w-2xl mx-auto text-gray-700">We deliver sustainable, reusable, and eco-friendly products that help
             protect our environment.</p>
-
         <div class="mt-12 flex flex-wrap justify-center gap-8">
             <div class="bg-white p-6 rounded-2xl shadow-md w-72 hover:shadow-lg transition">
                 <img src="{% static 'images/recycle.png' %}" alt="Recycle" class="mx-auto w-max mb-4">
@@ -105,12 +100,153 @@
             </div>
         </div>
     </section>
-    {% endblock %}
+
+    <!-- 🌟 Featured Categories -->
+    <section class="py-16 bg-white">
+        <h2 class="text-3xl font-bold text-center text-mainGreen mb-10">Shop by Category</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div class="text-center bg-bgColor p-6 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://via.placeholder.com/350.png?text=Home+%26+Kitchen" class="rounded-xl mb-4 w-full">
+                <h3 class="text-xl font-semibold text-mainGreen">Home & Kitchen</h3>
+                <p class="text-gray-600 text-sm mt-2">Eco-friendly everyday essentials for a greener lifestyle.</p>
+            </div>
+            <div class="text-center bg-bgColor p-6 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://via.placeholder.com/350.png?text=Wellness+Products" class="rounded-xl mb-4 w-full">
+                <h3 class="text-xl font-semibold text-mainGreen">Wellness</h3>
+                <p class="text-gray-600 text-sm mt-2">Natural and sustainable products to take care of you.</p>
+            </div>
+            <div class="text-center bg-bgColor p-6 rounded-2xl shadow hover:shadow-lg transition">
+                <img src="https://via.placeholder.com/350.png?text=Eco+Accessories" class="rounded-xl mb-4 w-full">
+                <h3 class="text-xl font-semibold text-mainGreen">Accessories</h3>
+                <p class="text-gray-600 text-sm mt-2">Eco accessories made with love for the planet.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 🔥 Trending Products Section -->
+    <section class="py-16 bg-bgColor">
+        <h2 class="text-3xl font-bold text-center text-mainGreen mb-10">Trending Eco Products</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-7xl mx-auto px-6">
+
+            <!-- Product 1 -->
+            <div class="bg-white rounded-2xl shadow hover:shadow-xl hover:scale-105 transition-transform p-4">
+                <img src="{% static 'images/eco-bag.png' %}" class="rounded-lg w-full mb-4 object-cover" alt="Eco Bag">
+                <h3 class="text-lg font-semibold text-mainGreen">Eco Bag</h3>
+                <p class="text-gray-600 text-sm mt-1">Sustainable, reusable, and made from natural materials.</p>
+                <p class="text-mainGreen font-semibold mt-2">&#8377;399</p>
+                <div class="mt-3 flex gap-2">
+                    <button class="w-1/2 bg-mainGreen text-white py-2 rounded-lg hover:bg-green-800">Add to
+                        Cart</button>
+                    <button class="w-1/2 bg-accentBeige text-mainGreen py-2 rounded-lg hover:bg-yellow-100">Buy
+                        Now</button>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="bg-white rounded-2xl shadow hover:shadow-xl hover:scale-105 transition-transform p-4">
+                <img src="{% static 'images/bamboo-straw.jpg' %}" class="rounded-lg w-full mb-4 object-cover"
+                    alt="Bamboo Straw">
+                <h3 class="text-lg font-semibold text-mainGreen">Bamboo Straw</h3>
+                <p class="text-gray-600 text-sm mt-1">Eco-friendly alternative to plastic straws.</p>
+                <p class="text-mainGreen font-semibold mt-2"> &#8377;99</p>
+                <div class="mt-3 flex gap-2">
+                    <button class="w-1/2 bg-mainGreen text-white py-2 rounded-lg hover:bg-green-800">Add to
+                        Cart</button>
+                    <button class="w-1/2 bg-accentBeige text-mainGreen py-2 rounded-lg hover:bg-yellow-100">Buy
+                        Now</button>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="bg-white rounded-2xl shadow hover:shadow-xl hover:scale-105 transition-transform p-4">
+                <img src="{% static 'images/reusable-bottlee.jpg' %}" class="rounded-lg w-full mb-4 object-cover"
+                    alt="Reusable Bottle">
+                <h3 class="text-lg font-semibold text-mainGreen">Reusable Bottle</h3>
+                <p class="text-gray-600 text-sm mt-1">Durable, reusable, and safe for the environment.</p>
+                <p class="text-mainGreen font-semibold mt-2"> &#8377;499</p>
+                <div class="mt-3 flex gap-2">
+                    <button class="w-1/2 bg-mainGreen text-white py-2 rounded-lg hover:bg-green-800">Add to
+                        Cart</button>
+                    <button class="w-1/2 bg-accentBeige text-mainGreen py-2 rounded-lg hover:bg-yellow-100">Buy
+                        Now</button>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="bg-white rounded-2xl shadow hover:shadow-xl hover:scale-105 transition-transform p-4">
+                <img src="{% static 'images/cotton-tote.jpg' %}" class="rounded-lg w-full mb-4 object-cover"
+                    alt="Organic Cotton Tote">
+                <h3 class="text-lg font-semibold text-mainGreen">Organic Cotton Tote</h3>
+                <p class="text-gray-600 text-sm mt-1">Made from 100% organic cotton.</p>
+                <p class="text-mainGreen font-semibold mt-2"> &#8377;300</p>
+                <div class="mt-3 flex gap-2">
+                    <button class="w-1/2 bg-mainGreen text-white py-2 rounded-lg hover:bg-green-800">Add to
+                        Cart</button>
+                    <button class="w-1/2 bg-accentBeige text-mainGreen py-2 rounded-lg hover:bg-yellow-100">Buy
+                        Now</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 🌎 Eco Impact Stats -->
+    <section class="py-16 bg-white text-center">
+        <h2 class="text-3xl font-bold text-mainGreen mb-10">Our Eco Impact</h2>
+        <div class="flex flex-wrap justify-center gap-10">
+            <div class="text-center">
+                <h3 class="text-4xl font-bold text-mainGreen">5K+</h3>
+                <p class="text-gray-700">Plastic Bottles Saved</p>
+            </div>
+            <div class="text-center">
+                <h3 class="text-4xl font-bold text-mainGreen">2K+</h3>
+                <p class="text-gray-700">Happy Eco Shoppers</p>
+            </div>
+            <div class="text-center">
+                <h3 class="text-4xl font-bold text-mainGreen">100%</h3>
+                <p class="text-gray-700">Eco-Friendly Products</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ⭐ Customer Reviews -->
+    <section class="py-16 bg-bgColor">
+        <h2 class="text-3xl font-bold text-center text-mainGreen mb-10">What Our Customers Say</h2>
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
+            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                <p class="text-gray-700">“Amazing quality and eco-friendly. Love the packaging too!”</p>
+                <h4 class="mt-4 font-semibold text-mainGreen">– Ayesha</h4>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                <p class="text-gray-700">“EcoCart is my go-to store for sustainable products.”</p>
+                <h4 class="mt-4 font-semibold text-mainGreen">– Rahul</h4>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                <p class="text-gray-700">“Beautiful products and fast delivery. Totally recommend!”</p>
+                <h4 class="mt-4 font-semibold text-mainGreen">– Meera</h4>
+            </div>
+        </div>
+    </section>
+
+    <!-- 💌 Newsletter -->
+    <section class="py-16 bg-mainGreen text-white text-center">
+        <h2 class="text-3xl font-bold mb-4">Join Our Eco Family</h2>
+        <p class="text-lg mb-6">Subscribe for eco tips, offers, and product updates!</p>
+        <form class="max-w-xl mx-auto flex">
+            <input type="email" placeholder="Enter your email"
+                class="w-full p-3 rounded-l-lg text-gray-800 outline-none">
+            <button class="bg-accentBeige text-mainGreen px-6 rounded-r-lg font-semibold">
+                Subscribe
+            </button>
+        </form>
+    </section>
 
     <!-- 🌱 Footer -->
     <footer class="bg-mainGreen text-white text-center py-4 text-sm">
         © 2025 EcoCart | Designed with 🌿 by EcoCart
     </footer>
+
+    {% endblock %}
 </body>
 
 </html>

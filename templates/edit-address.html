@@ -121,10 +121,11 @@
         <div class="popup">
             <h2>Edit Address</h2>
 
-            <input type="text" id="name" placeholder="Full Name" value="Anusree MP">
-            <textarea id="address" rows="3" placeholder="Full Address">Palakkad, Kerala</textarea>
-            <input type="text" id="pincode" placeholder="Pincode" value="678001">
-            <input type="text" id="phone" placeholder="Phone Number" value="9876543210">
+            <input type="text" id="name" placeholder="Full Name" value="{{ user.first_name }} {{ user.last_name }}">
+            <textarea id="address" rows="3" placeholder="Full Address">{{ user.address }}</textarea>
+            <input type="text" id="pincode" placeholder="Pincode" value="{{ user.pincode }}">
+            <input type="text" id="phone" placeholder="Phone Number" value="{{ user.phone }}">
+
 
             <div class="btn-row">
                 <button class="cancel-btn" onclick="closePopup()">Cancel</button>

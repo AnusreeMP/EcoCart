@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,6 +25,14 @@
             font-size: 18px;
         }
 
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            /* so user knows it's clickable */
+        }
+
         .order-container {
             max-width: 900px;
             margin: 30px auto;
@@ -44,7 +53,7 @@
             border-radius: 12px;
             padding: 18px;
             margin-bottom: 18px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
             border-left: 6px solid #66bb6a;
         }
 
@@ -66,9 +75,21 @@
             font-weight: 600;
             font-size: 14px;
         }
-        .Pending { background: #fff3cd; color: #856404; }
-        .Completed { background: #d4edda; color: #155724; }
-        .Cancelled { background: #f8d7da; color: #721c24; }
+
+        .Pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .Completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .Cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
 
         .items-list {
             margin-top: 15px;
@@ -122,6 +143,7 @@
             margin-top: 12px;
             font-size: 14px;
         }
+
         .view-btn:hover {
             background: #2e7d32;
         }
@@ -138,19 +160,26 @@
 
 <body>
 
-<header>
-    <div class="logo">🌿 EcoCart</div>
-    <div>
-        <a href="{% url 'userhome' %}" style="color:white; text-decoration:none; margin-right:15px;">Home</a>
-        <a href="{% url 'user_profile' %}" style="color:white; text-decoration:none;">Profile</a>
-    </div>
-</header>
+    <header>
+        <span class="logo" onclick="goHome()">🌿 EcoCart</span>
 
-<div class="order-container">
+        <div>
+            <a href="{% url 'userhome' %}" style="color:white; text-decoration:none; margin-right: 15px;">Home</a>
+            <a href="{% url 'user_profile' %}" style="color:white; text-decoration:none;">My Profile</a>
+        </div>
 
-    <h2>My Orders</h2>
+        <script>
+            function goHome() {
+                window.location.href = "{% url 'userhome' %}";
+            }
+        </script>
+    </header>
 
-    {% if orders %}
+    <div class="order-container">
+
+        <h2>My Orders</h2>
+
+        {% if orders %}
         {% for order in orders %}
         <div class="order-card">
 
@@ -185,12 +214,12 @@
 
         </div>
         {% endfor %}
-    {% else %}
+        {% else %}
         <p class="no-orders">You haven't placed any orders yet 🌱</p>
-    {% endif %}
+        {% endif %}
 
-</div>
+    </div>
 
 </body>
+
 </html>
- 

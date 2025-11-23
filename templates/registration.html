@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
@@ -8,26 +9,35 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f0fff4;
+            background: url('{% static "images/reg.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
             color: #2e7d32;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 40px 0;
         }
 
+
         .register-box {
-            background-color: #fff;
-            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 25px 30px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            width: 350px;
         }
 
         h2 {
             text-align: center;
             color: #1b5e20;
             margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 500;
         }
 
         input,
@@ -80,12 +90,12 @@
 
 <body>
     <div class="register-box">
-        <h2>🌿 EcoCart Registration</h2>
+        <h2>🌿EcoCart Signup</h2>
 
         {% if messages %}
-     
+
         <div class="msg">{{ message }}</div>
-    
+
         {% endif %}
 
         <form method="POST">

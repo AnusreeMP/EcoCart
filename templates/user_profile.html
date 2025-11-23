@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,9 +23,11 @@
         }
 
         .logo {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
-            letter-spacing: 1px;
+            color: white;
+            cursor: pointer;
+            /* so user knows it's clickable */
         }
 
         .profile-container {
@@ -33,7 +36,7 @@
             background: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
@@ -82,13 +85,18 @@
         }
     </style>
 </head>
+
 <body>
     <header>
-        <div class="logo">🌿 EcoCart</div>
-        <div>
-            <a href="{% url 'userhome' %}" style="color: white; text-decoration: none;">Home</a>
-        </div>
+        <span class="logo" onclick="goHome()">🌿 EcoCart</span>
+
+        <script>
+            function goHome() {
+                window.location.href = "{% url 'userhome' %}";
+            }
+        </script>
     </header>
+
 
     <div class="profile-container">
         <h2>My Profile</h2>
@@ -103,10 +111,11 @@
 
         <div class="btn-container">
             <a href="{% url 'userhome' %}" class="btn">Back to Home</a>
-    </div>
+        </div>
 
-    <footer>
-        © 2025 EcoCart | Making Shopping Greener 🌎
-    </footer>
+        <footer>
+            © 2025 EcoCart | Making Shopping Greener 🌎
+        </footer>
 </body>
+
 </html>

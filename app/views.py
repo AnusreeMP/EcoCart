@@ -7,6 +7,8 @@ from .models import Product,Category,CustomUser,Blog
 from django.contrib.auth import get_user_model
 from .models import  Cart,Order,OrderItem,Wishlist
 from django.contrib.auth.decorators import user_passes_test
+from django.core.mail import send_mail
+from django.contrib import messages
 from django.db.models import Q
 
 
@@ -115,9 +117,9 @@ def delete_blog(request, blog_id):
     messages.success(request, "Blog deleted successfully!")
     return redirect('admin_dashboard')
 
-def blog_list(request):
-    blogs = Blog.objects.all().order_by('-date')
-    return render(request, 'blog_list.html', {'blogs': blogs})
+# def blog_list(request):
+#     blogs = Blog.objects.all().order_by('-date')
+#     return render(request, 'blog_list.html', {'blogs': blogs})
 
 
 
@@ -518,12 +520,11 @@ def userhome(request):
     if category:
         products = products.filter(category__name=category)
     if request.user.is_authenticated:
-        user_wishlist = Wishlist.objects.filter(user=request.user).values_list('product__name', flat=True)
-
+       wishlist_items = Wishlist.objects.filter(user=request.user).values_list("product_id", flat=True)
     return render(request, 'userhome.html', {
         'products': products,
         'categories': categories,
-        'user_wishlist': user_wishlist
+        'user_wishlist_ids': list(wishlist_items)
     })
 
 
@@ -599,32 +600,87 @@ def add_to_wishlist(request, id):
 
     return redirect('wishlist')
 
+
+def add_to_cart_from_wishlist(request, item_id):
+    wishlist_item = get_object_or_404(Wishlist, id=item_id, user=request.user)
+    product = wishlist_item.product
+
+    # add to cart
+    Cart.objects.create(
+        user=request.user,
+        product=product,
+        quantity=1
+    )
+
+    return JsonResponse({'message': 'Added to cart'})
+
+
 def remove_wishlist(request, item_id):
     item = get_object_or_404(Wishlist, id=item_id, user=request.user)
     item.delete()
     return redirect("wishlist")
 
-
 def toggle_wishlist(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
-    wishlist_item = Wishlist.objects.filter(user=request.user, product=product)
+    # Check if wishlist item exists
+    wishlist_item = Wishlist.objects.filter(user=request.user, product=product).first()
 
-    if wishlist_item.exists():
+    if wishlist_item:
         wishlist_item.delete()
         messages.success(request, "Removed from Wishlist")
     else:
         Wishlist.objects.create(user=request.user, product=product)
         messages.success(request, "Added to Wishlist")
 
-    return redirect(request.META.get("HTTP_REFERER", "userhome"))
-
+    # Redirect back safely
+    return redirect(request.META.get('HTTP_REFERER', 'userhome'))
 
 def about(request):
     return render(request, 'about.html')
 
+
 def contact(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        full_message = f"""
+        Name: {name}
+        Email: {email}
+        Subject: {subject}
+
+        Message:
+        {message}
+        """
+
+        try:
+            send_mail(
+                subject=f"New Contact Form Message: {subject}",
+                message=full_message,
+                from_email=email,
+                recipient_list=['support@ecocart.com'],  # your email
+                fail_silently=False,
+            )
+
+            messages.success(request, "Your message has been sent successfully! 🌿")
+            return redirect('contact')
+
+        except Exception as e:
+            messages.error(request, f"Error sending message: {str(e)}")
+
     return render(request, 'contact.html')
+
+def remove_item(request, item_id):
+    try:
+        item = Wishlist.objects.get(id=item_id)
+        item.delete()
+    except Wishlist.DoesNotExist:
+        pass
+    return redirect('wishlist')  # change to your cart page name
+
 
 
 

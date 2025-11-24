@@ -101,94 +101,134 @@
         </div>
     </section>
 
-    <!-- 🌟 Featured Categories -->
-    <section class="py-16 bg-white">
-        <h2 class="text-3xl font-bold text-center text-mainGreen mb-10">Shop by Category</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div class="text-center bg-bgColor p-6 rounded-2xl shadow hover:shadow-lg transition">
-                <img src="https://via.placeholder.com/350.png?text=Home+%26+Kitchen" class="rounded-xl mb-4 w-full">
-                <h3 class="text-xl font-semibold text-mainGreen">Home & Kitchen</h3>
-                <p class="text-gray-600 text-sm mt-2">Eco-friendly everyday essentials for a greener lifestyle.</p>
+    <!-- 🛒 Categories Section -->
+    <section style="padding: 4rem 0; background-color: #ffffff;">
+        <h2 style="text-align: center; font-size: 2rem; font-weight: bold; color: #2F855A; margin-bottom: 2.5rem;">
+            Shop by Category
+        </h2>
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1140px; margin: 0 auto;">
+
+            <!-- Category 1 -->
+            <div
+                style="text-align: center; background-color: #f9f9f9; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: box-shadow 0.3s; height: 360px;">
+                <img src="{% static 'images/home-kitchen.jpg' %}" alt="Home & Kitchen"
+                    style="width: 100%; height: 180px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: #2F855A;">Home & Kitchen</h3>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 0.25rem;">Eco-friendly everyday essentials for
+                    a greener lifestyle.</p>
             </div>
-            <div class="text-center bg-bgColor p-6 rounded-2xl shadow hover:shadow-lg transition">
-                <img src="https://via.placeholder.com/350.png?text=Wellness+Products" class="rounded-xl mb-4 w-full">
-                <h3 class="text-xl font-semibold text-mainGreen">Wellness</h3>
-                <p class="text-gray-600 text-sm mt-2">Natural and sustainable products to take care of you.</p>
+
+            <!-- Category 2 -->
+            <div
+                style="text-align: center; background-color: #f9f9f9; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: box-shadow 0.3s; height: 360px;">
+                <img src="{% static 'images/wellness-products.jpg' %}" alt="Wellness Products"
+                    style="width: 100%; height: 180px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: #2F855A;">Wellness</h3>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 0.25rem;">Natural and sustainable products to
+                    take care of you.</p>
             </div>
-            <div class="text-center bg-bgColor p-6 rounded-2xl shadow hover:shadow-lg transition">
-                <img src="https://via.placeholder.com/350.png?text=Eco+Accessories" class="rounded-xl mb-4 w-full">
-                <h3 class="text-xl font-semibold text-mainGreen">Accessories</h3>
-                <p class="text-gray-600 text-sm mt-2">Eco accessories made with love for the planet.</p>
+
+            <!-- Category 3 -->
+            <div
+                style="text-align: center; background-color: #f9f9f9; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: box-shadow 0.3s; height: 360px;">
+                <img src="{% static 'images/eco-accessories.jpg' %}" alt="Eco Accessories"
+                    style="width: 100%; height: 180px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: #2F855A;">Accessories</h3>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 0.25rem;">Eco accessories made with love for
+                    the planet.</p>
             </div>
+
         </div>
     </section>
 
-    <!-- 🔥 Trending Products Section -->
-    <section class="py-16 bg-bgColor">
-        <h2 class="text-3xl font-bold text-center text-mainGreen mb-10">Trending Eco Products</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-7xl mx-auto px-6">
+    <!-- 🌟 Trending Products -->
+
+    <section style="padding: 4rem 0; background-color: #f9f9f9;">
+        <h2 style="text-align: center; font-size: 2rem; font-weight: bold; color: #2F855A; margin-bottom: 2.5rem;">
+            Trending Eco Products
+        </h2>
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1280px; margin: 0 auto; padding: 0 1.5rem;">
 
             <!-- Product 1 -->
-            <div class="bg-white rounded-2xl shadow hover:shadow-xl hover:scale-105 transition-transform p-4">
-                <img src="{% static 'images/eco-bag.png' %}" class="rounded-lg w-full mb-4 object-cover" alt="Eco Bag">
-                <h3 class="text-lg font-semibold text-mainGreen">Eco Bag</h3>
-                <p class="text-gray-600 text-sm mt-1">Sustainable, reusable, and made from natural materials.</p>
-                <p class="text-mainGreen font-semibold mt-2">&#8377;399</p>
-                <div class="mt-3 flex gap-2">
-                    <button class="w-1/2 bg-mainGreen text-white py-2 rounded-lg hover:bg-green-800">Add to
-                        Cart</button>
-                    <button class="w-1/2 bg-accentBeige text-mainGreen py-2 rounded-lg hover:bg-yellow-100">Buy
+            <div
+                style="background-color: #fff; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1rem; text-align: center; transition: transform 0.3s, box-shadow 0.3s; height: 420px;">
+                <img src="{% static 'images/eco-bag.png' %}" alt="Eco Bag"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.1rem; font-weight: 600; color: #2F855A;">Eco Bag</h3>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 0.25rem;">Made from
+                    natural materials.</p>
+                <p style="color: #2F855A; font-weight: 600; margin-top: 0.5rem;">&#8377;399</p>
+                <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                    <button
+                        style="flex: 1; background-color: #2F855A; color: white; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer;">Add
+                        to Cart</button>
+                    <button
+                        style="flex: 1; background-color: #FDE68A; color: #2F855A; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer;">Buy
                         Now</button>
                 </div>
             </div>
 
             <!-- Product 2 -->
-            <div class="bg-white rounded-2xl shadow hover:shadow-xl hover:scale-105 transition-transform p-4">
-                <img src="{% static 'images/bamboo-straw.jpg' %}" class="rounded-lg w-full mb-4 object-cover"
-                    alt="Bamboo Straw">
-                <h3 class="text-lg font-semibold text-mainGreen">Bamboo Straw</h3>
-                <p class="text-gray-600 text-sm mt-1">Eco-friendly alternative to plastic straws.</p>
-                <p class="text-mainGreen font-semibold mt-2"> &#8377;99</p>
-                <div class="mt-3 flex gap-2">
-                    <button class="w-1/2 bg-mainGreen text-white py-2 rounded-lg hover:bg-green-800">Add to
-                        Cart</button>
-                    <button class="w-1/2 bg-accentBeige text-mainGreen py-2 rounded-lg hover:bg-yellow-100">Buy
+            <div
+                style="background-color: #fff; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1rem; text-align: center; transition: transform 0.3s, box-shadow 0.3s; height: 420px;">
+                <img src="{% static 'images/bamboo-straw.jpg' %}" alt="Bamboo Straw"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.1rem; font-weight: 600; color: #2F855A;">Bamboo Straw</h3>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 0.25rem;">Eco-friendly alternative to plastic
+                    straws.</p>
+                <p style="color: #2F855A; font-weight: 600; margin-top: 0.5rem;">&#8377;99</p>
+                <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                    <button
+                        style="flex: 1; background-color: #2F855A; color: white; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer;">Add
+                        to Cart</button>
+                    <button
+                        style="flex: 1; background-color: #FDE68A; color: #2F855A; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer;">Buy
                         Now</button>
                 </div>
             </div>
 
             <!-- Product 3 -->
-            <div class="bg-white rounded-2xl shadow hover:shadow-xl hover:scale-105 transition-transform p-4">
-                <img src="{% static 'images/reusable-bottlee.jpg' %}" class="rounded-lg w-full mb-4 object-cover"
-                    alt="Reusable Bottle">
-                <h3 class="text-lg font-semibold text-mainGreen">Reusable Bottle</h3>
-                <p class="text-gray-600 text-sm mt-1">Durable, reusable, and safe for the environment.</p>
-                <p class="text-mainGreen font-semibold mt-2"> &#8377;499</p>
-                <div class="mt-3 flex gap-2">
-                    <button class="w-1/2 bg-mainGreen text-white py-2 rounded-lg hover:bg-green-800">Add to
-                        Cart</button>
-                    <button class="w-1/2 bg-accentBeige text-mainGreen py-2 rounded-lg hover:bg-yellow-100">Buy
+            <div
+                style="background-color: #fff; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1rem; text-align: center; transition: transform 0.3s, box-shadow 0.3s; height: 420px;">
+                <img src="{% static 'images/reusable-bottlee.jpg' %}" alt="Reusable Bottle"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.1rem; font-weight: 600; color: #2F855A;">Reusable Bottle</h3>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 0.25rem;">Safe for the
+                    environment.</p>
+                <p style="color: #2F855A; font-weight: 600; margin-top: 0.5rem;">&#8377;499</p>
+                <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                    <button
+                        style="flex: 1; background-color: #2F855A; color: white; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer;">Add
+                        to Cart</button>
+                    <button
+                        style="flex: 1; background-color: #FDE68A; color: #2F855A; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer;">Buy
                         Now</button>
                 </div>
             </div>
 
             <!-- Product 4 -->
-            <div class="bg-white rounded-2xl shadow hover:shadow-xl hover:scale-105 transition-transform p-4">
-                <img src="{% static 'images/cotton-tote.jpg' %}" class="rounded-lg w-full mb-4 object-cover"
-                    alt="Organic Cotton Tote">
-                <h3 class="text-lg font-semibold text-mainGreen">Organic Cotton Tote</h3>
-                <p class="text-gray-600 text-sm mt-1">Made from 100% organic cotton.</p>
-                <p class="text-mainGreen font-semibold mt-2"> &#8377;300</p>
-                <div class="mt-3 flex gap-2">
-                    <button class="w-1/2 bg-mainGreen text-white py-2 rounded-lg hover:bg-green-800">Add to
-                        Cart</button>
-                    <button class="w-1/2 bg-accentBeige text-mainGreen py-2 rounded-lg hover:bg-yellow-100">Buy
+            <div
+                style="background-color: #fff; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 1rem; text-align: center; transition: transform 0.3s, box-shadow 0.3s; height: 420px;">
+                <img src="{% static 'images/cotton-tote.jpg' %}" alt="Organic Cotton Tote"
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.1rem; font-weight: 600; color: #2F855A;">Organic Cotton Tote</h3>
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 0.25rem;">Made from 100% organic cotton.</p>
+                <p style="color: #2F855A; font-weight: 600; margin-top: 0.5rem;">&#8377;300</p>
+                <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                    <button
+                        style="flex: 1; background-color: #2F855A; color: white; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer;">Add
+                        to Cart</button>
+                    <button
+                        style="flex: 1; background-color: #FDE68A; color: #2F855A; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer;">Buy
                         Now</button>
                 </div>
             </div>
 
         </div>
     </section>
+
 
     <!-- 🌎 Eco Impact Stats -->
     <section class="py-16 bg-white text-center">

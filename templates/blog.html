@@ -15,15 +15,14 @@
             padding: 0;
         }
         nav {
-            background-color: white;
+            background-color: #228b22;
             padding: 15px 40px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         nav h2 {
-            color: #228b22;;
+            color: white;
             font-weight: bold;
             margin: 0;
         }
@@ -35,11 +34,11 @@
         }
         nav ul li a {
             text-decoration: none;
-            color: #2d6a4f;
+            color: white;
             font-weight: 500;
         }
         nav ul li a:hover {
-            color: #40916c;
+            color: #a7f3d0;
         }
 
         h1 {
@@ -100,21 +99,62 @@
         .read-more:hover {
             background-color: #40916c;
         }
+
+        /* Eco-themed Footer */
+        footer {
+            background-color: #228b22;
+            color: white;
+            padding: 50px 20px 20px 20px;
+            margin-top: 50px;
+        }
+        footer h4 {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        footer p, footer a {
+            font-size: 14px;
+            color: white;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #a7f3d0;
+        }
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .footer-bottom {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+        .social-icons a {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .social-icons a:hover {
+            color: #a7f3d0;
+        }
     </style>
 </head>
 
 <body>
     <!-- Navbar -->
-   <nav style="background-color: #228b22; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center;">
-    <h2 style="color: white; font-weight: bold; margin: 0;">EcoCart</h2>
-    <ul style="display: flex; gap: 25px; list-style: none; margin: 0;">
-        <li><a href="/" style="text-decoration: none; color: white; font-weight: 500;">Home</a></li>
-        <li><a href="/shop" style="text-decoration: none; color: white; font-weight: 500;">Shop</a></li>
-        <li><a href="/blog" style="text-decoration: none; color: white; font-weight: 500;">Blog</a></li>
-        <li><a href="/about" style="text-decoration: none; color: white; font-weight: 500;">About</a></li>
-        <li><a href="/contact" style="text-decoration: none; color: white; font-weight: 500;">Contact</a></li>
-    </ul>
-</nav>
+   <nav>
+        <h2>EcoCart</h2>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/shop">Shop</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
 
     <!-- Blog Section -->
     <h1>EcoCart Blog</h1>
@@ -132,5 +172,50 @@
         <p style="text-align:center; color:#666;">No blog posts available.</p>
         {% endfor %}
     </div>
+
+    <!-- Eco-themed Footer -->
+    <footer>
+        <div class="footer-container">
+            <!-- About -->
+            <div>
+                <h4>About EcoCart</h4>
+                <p>Your one-stop eco-friendly store for sustainable living. 🌱</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h4>Quick Links</h4>
+                <p><a href="/">Home</a></p>
+                <p><a href="/shop">Shop</a></p>
+                <p><a href="/blog">Blog</a></p>
+                <p><a href="/about">About</a></p>
+                <p><a href="/contact">Contact</a></p>
+            </div>
+
+            <!-- Support -->
+            <div>
+                <h4>Support</h4>
+                <p><a href="#">Help Center</a></p>
+                <p><a href="#">Returns</a></p>
+                <p><a href="#">Shipping</a></p>
+                <p><a href="#">FAQ</a></p>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h4>Contact</h4>
+                <p>Email: support@ecocart.com</p>
+                <p>Phone: +91 12345 67890</p>
+                <div class="social-icons">
+                    <a href="#" title="Website">🌐</a>
+                    <a href="#" title="Facebook">📘</a>
+                    <a href="#" title="Twitter">🐦</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 EcoCart. All rights reserved.
+        </div>
+    </footer>
 </body>
 </html>

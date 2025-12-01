@@ -299,9 +299,6 @@ def mock_payment_success(request):
 
 
 
-
-
-
 def buy_now(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     Order.objects.create(
